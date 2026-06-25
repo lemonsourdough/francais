@@ -83,7 +83,10 @@
   }
   @keyframes flicker{0%,100%{opacity:.55}48%{opacity:.62}50%{opacity:.4}52%{opacity:.62}}
   ::selection{background:var(--neon);color:#021006}
-  .wrap{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:20px 16px 130px;min-height:100%}
+  .wrap{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:20px 22px 60px;min-height:100%}
+  /* learning screens stay readable-width and centered; home/sea go full width */
+  #study,#done,#game,#arcade,#match,#cloze,#build,#read,#write,#test,#stats,#curri{max-width:560px;margin:0 auto}
+  .top,#exam-banner{max-width:1400px;margin-left:auto;margin-right:auto}
   input,textarea{background:var(--paper-2);color:var(--ink);border-radius:4px}
   input:focus,textarea:focus{outline:none;border-color:var(--neon)!important;box-shadow:0 0 12px -4px var(--neon)}
   input::placeholder,textarea::placeholder{color:var(--ink-soft);opacity:.6}
@@ -192,7 +195,7 @@
   .sea-act:active{transform:scale(.96)}
   #sea-start{background:rgba(57,255,20,.14);color:var(--neon);text-shadow:0 0 8px var(--neon)}
 
-  .sea{position:relative;width:100%;height:calc(100vh - 230px);min-height:560px;overflow:hidden;border-radius:6px;
+  .sea{position:relative;width:100%;height:calc(100vh - 200px);min-height:600px;overflow:hidden;border-radius:6px;
     background:
       radial-gradient(140% 80% at 50% 0%, rgba(0,255,160,.10), rgba(0,0,0,0) 55%),
       repeating-linear-gradient(0deg, rgba(57,255,20,.025) 0 2px, transparent 2px 26px),
@@ -296,6 +299,28 @@
   .sm-btn-danger:hover{background:rgba(255,92,92,.24)}
   .sm-divider{height:1px;background:var(--line);margin:8px 0}
   .sm-foot{text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ink-soft);margin-top:18px;letter-spacing:1px;opacity:.6}
+  .sm-sub{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--ink-soft);line-height:1.5;margin-bottom:16px}
+  .lm-date{display:flex;align-items:center;gap:10px;margin-top:14px;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--ink-soft)}
+  .lm-date input{background:var(--paper-2);color:var(--ink);border:none;border-radius:6px;padding:8px 10px;font-family:'Rajdhani',monospace;font-size:14px;color-scheme:dark}
+
+  /* slim curriculum bar (after level chosen) */
+  .cur-slim{display:flex;align-items:center;gap:10px;background:rgba(57,255,20,.06);border-radius:6px;padding:9px 14px;
+    box-shadow:inset 0 0 16px -10px var(--neon);flex-wrap:nowrap;overflow:hidden}
+  .cur-slim .cs-lv{font-family:'Orbitron','Courier New',monospace;font-weight:700;font-size:13px;color:var(--gold);
+    text-shadow:0 0 8px rgba(198,255,74,.5);white-space:nowrap;flex:none}
+  .cur-slim .cs-bar{flex:1;min-width:50px;height:6px;background:var(--paper-2);border-radius:99px;overflow:hidden}
+  .cur-slim .cs-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--neon));box-shadow:0 0 6px var(--neon)}
+  .cur-slim .cs-pct{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--teal);flex:none}
+  .cur-slim .cs-dday{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--gold);flex:none}
+  .cur-slim .cs-go{flex:none;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:none;
+    background:rgba(57,255,20,.14);color:var(--neon);font-family:'Rajdhani',monospace;font-weight:600;font-size:13px;
+    padding:7px 12px;border-radius:5px;cursor:pointer;text-shadow:0 0 6px var(--neon);transition:.15s}
+  .cur-slim .cs-go:hover{background:rgba(57,255,20,.24)}
+  .cur-slim .cs-done{font-size:13px;color:var(--teal);flex:none}
+  .cur-slim .cs-map{flex:none;border:none;background:rgba(57,255,20,.08);color:var(--ink);width:30px;height:30px;
+    border-radius:5px;cursor:pointer;font-size:13px}
+  .cur-slim .cs-map:hover{background:rgba(57,255,20,.18)}
+  @media(max-width:560px){ .cur-slim{flex-wrap:wrap} .cur-slim .cs-go{max-width:none;flex:1} }
   .hero{padding:24px 22px;position:relative;overflow:hidden}
   .hero .greet{font-family:'Orbitron','Courier New',monospace;font-size:24px;font-weight:900;line-height:1.15;margin:0 0 6px;
     letter-spacing:1px;text-transform:uppercase;color:var(--ink);text-shadow:0 0 12px rgba(57,255,20,.45)}
@@ -9682,57 +9707,64 @@ function daysUntil(dateStr){
 }
 function renderExamBanner(){
   const wrap=el('exam-banner');
-  if(S.exam&&S.exam.skipped&&!S.exam.level){ wrap.innerHTML=''; return; }
-  // STEP 1: no level chosen yet -> show level picker
+  // not chosen yet -> keep banner empty (picker shows as a one-time modal instead)
   if(!S.exam || !S.exam.level){
-    let opts='';
-    CEFR.forEach(lv=>{ const i=CEFR_INFO[lv]; opts+=`<button class="lvl-opt" data-lv="${lv}"><span class="lo-ic">${i.ic}</span><span class="lo-nm">${i.nm}</span><span class="lo-ko">${i.ko}</span></button>`; });
-    wrap.innerHTML=`<div class="exam-set">
-      <div class="es-t">🎯 목표 레벨을 정하세요</div>
-      <div class="es-d">CEFR 기준 목표를 고르면, 그 수준까지 필요한 학습을 <b>단계별 커리큘럼</b>으로 짜드려요.</div>
-      <div class="lvl-grid">${opts}</div>
-      <button class="es-skip" id="ex-skip">나중에</button></div>`;
-    wrap.querySelectorAll('.lvl-opt').forEach(b=>{ b.onclick=()=>{ S.exam={level:b.dataset.lv, date:(S.exam&&S.exam.date)||null}; save(); renderExamBanner(); }; });
-    const sk=el('ex-skip'); if(sk) sk.onclick=()=>{ S.exam={level:null,skipped:true}; el('exam-banner').innerHTML=''; };
+    wrap.innerHTML='';
+    if(!S.exam || (!S.exam.level && !S.exam.skipped)) maybeShowLevelModal();
     return;
   }
-  // STEP 2: level chosen -> show curriculum progress banner
+  // level chosen -> SLIM one-line bar (doesn't eat space)
   const lv=S.exam.level, info=CEFR_INFO[lv];
   const tot=curriculumTotals(lv);
   const nx=nextUnit(lv);
-  const dateLine = S.exam.date ? (()=>{ const left=daysUntil(S.exam.date); return left>=0?`D-${left}`:'시험일 경과'; })() : null;
-  let dailyLine='';
-  if(S.exam.date){ const left=daysUntil(S.exam.date); const remain=tot.total-tot.learned; if(left>0&&remain>0) dailyLine=`하루 <b>${Math.ceil(remain/left)}장</b>이면 시험 전 완성`; }
-  wrap.innerHTML=`<div class="exam-card cur-card">
-    <button class="ex-edit" id="ex-edit">변경</button>
-    <div class="ex-d">${info.ic} 목표 ${info.nm} · ${info.ko}</div>
-    <div class="cur-row">
-      <div class="cur-big">${tot.pct}<small>%</small></div>
-      <div class="cur-meta">
-        <div class="cur-stage">${tot.doneUnits} / ${tot.units} 단계 완료</div>
-        ${dateLine?`<div class="cur-dday">${dateLine}${dailyLine?' · '+dailyLine:''}</div>`:''}
-      </div>
-    </div>
-    <div class="ex-bar"><i style="width:${tot.pct}%"></i></div>
-    ${ nx
-      ? `<button class="cur-next" id="cur-go"><span class="cn-lbl">▶ 다음 단계</span><span class="cn-nm">${nx.unit.nm}</span><span class="cn-pct">${nx.prog.pct}% · ${nx.prog.total}장</span></button>`
-      : `<div class="cur-done">🏆 ${info.nm} 커리큘럼 완성! 복습으로 굳혀요.</div>` }
-    <button class="cur-map-btn" id="cur-map">📋 전체 커리큘럼 보기</button>
-    ${ S.exam.date ? '' : '<button class="cur-map-btn" id="cur-setdate" style="margin-top:6px">📅 시험일 추가 (D-day 계산)</button>' }
-    ${ S.exam.date ? '<div class="cur-datebox" id="cur-datebox" style="display:none"></div>' : '<div class="cur-datebox" id="cur-datebox" style="display:none"></div>' }
+  const dateLine = S.exam.date ? (()=>{ const left=daysUntil(S.exam.date); return left>=0?`D-${left}`:'D+'; })() : null;
+  wrap.innerHTML=`<div class="cur-slim">
+    <span class="cs-lv">${info.ic} ${info.nm}</span>
+    <span class="cs-bar"><i style="width:${tot.pct}%"></i></span>
+    <span class="cs-pct">${tot.pct}%</span>
+    ${dateLine?`<span class="cs-dday">${dateLine}</span>`:''}
+    ${ nx?`<button class="cs-go" id="cur-go">▶ ${esc(nx.unit.nm)}</button>`:`<span class="cs-done">🏆 완성</span>` }
+    <button class="cs-map" id="cur-map">📋</button>
+    <button class="cs-map" id="ex-edit">⚙</button>
   </div>`;
-  const eb=el('ex-edit'); if(eb) eb.onclick=()=>{ S.exam={level:null, date:S.exam.date}; renderExamBanner(); };
+  const eb=el('ex-edit'); if(eb) eb.onclick=()=>{ openLevelModal(); };
   const go=el('cur-go'); if(go&&nx) go.onclick=()=>startSession(nx.unit.ids, nx.unit.mode, nx.unit.key);
   const mp=el('cur-map'); if(mp) mp.onclick=()=>openCurriculum();
-  const sd=el('cur-setdate'); if(sd) sd.onclick=()=>{
-    const box=el('cur-datebox'); box.style.display='block';
-    box.innerHTML='<input type="date" id="cur-date-in"> <button class="es-go" id="cur-date-save">설정</button>';
-    const sv=el('cur-date-save'); if(sv) sv.onclick=()=>{ const v=el('cur-date-in').value; if(v){ S.exam.date=v; save(); renderExamBanner(); } };
-  };
+}
+// one-time level modal: only auto-pops if never chosen and never skipped
+function maybeShowLevelModal(){
+  if(S._levelAsked) return;       // don't nag repeatedly within a session
+  S._levelAsked=true;
+  openLevelModal();
+}
+function openLevelModal(){
+  let opts='';
+  CEFR.forEach(lv=>{ const i=CEFR_INFO[lv]; opts+=`<button class="lvl-opt" data-lv="${lv}"><span class="lo-ic">${i.ic}</span><span class="lo-nm">${i.nm}</span><span class="lo-ko">${i.ko}</span></button>`; });
+  let m=el('level-modal');
+  if(!m){ m=document.createElement('div'); m.id='level-modal'; m.className='settings-modal'; document.body.appendChild(m); }
+  m.innerHTML=`<div class="sm-card" style="max-width:480px">
+    <button class="sm-close" id="lm-close">✕</button>
+    <div class="sm-title">🎯 SELECT TARGET</div>
+    <div class="sm-sub">목표 CEFR 레벨을 고르면, 거기까지 필요한 학습을 단계별 커리큘럼으로 짜드려요. (한 번만 설정)</div>
+    <div class="lvl-grid">${opts}</div>
+    <div class="lm-date">
+      <span>시험일 (선택):</span>
+      <input type="date" id="lm-date-in" value="${(S.exam&&S.exam.date)||''}">
+    </div>
+    <button class="es-skip" id="lm-skip">나중에 정할게요</button>
+  </div>`;
+  m.classList.add('open');
+  m.querySelectorAll('.lvl-opt').forEach(b=>{ b.onclick=()=>{
+    const d=el('lm-date-in')?el('lm-date-in').value:'';
+    S.exam={level:b.dataset.lv, date:d||null}; delete S.exam.skipped; save();
+    m.classList.remove('open'); renderExamBanner(); sound('lucky'); toast('🎯 목표 '+b.dataset.lv+' 설정! 커리큘럼 준비됐어요');
+  }; });
+  el('lm-close').onclick=()=>{ m.classList.remove('open'); };
+  el('lm-skip').onclick=()=>{ S.exam={level:null,skipped:true}; save(); m.classList.remove('open'); renderExamBanner(); };
+  m.onclick=(e)=>{ if(e.target===m) m.classList.remove('open'); };
 }
 function showExamSetup(){
-  S.exam=null;
-  renderExamBanner();
+  openLevelModal();
 }
 /* ---- curriculum roadmap screen ---- */
 function openCurriculum(){
@@ -10682,7 +10714,7 @@ el('sm-reset-time').onclick=()=>{
 };
 el('sm-reset-level').onclick=()=>{
   el('settings-modal').classList.remove('open');
-  S.exam=null; save(); show('home');
+  openLevelModal();
 };
 el('sm-reset-all').onclick=()=>{
   if(confirm('정말 전체 초기화할까요?\n모든 학습 기록·진도·통계·시간·내 단어장이 삭제되고 되돌릴 수 없어요.')){
