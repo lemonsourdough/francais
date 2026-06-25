@@ -298,6 +298,14 @@
   .sm-btn-danger{background:rgba(255,92,92,.12);color:#FF5C5C;box-shadow:inset 0 0 12px -7px #FF5C5C}
   .sm-btn-danger:hover{background:rgba(255,92,92,.24)}
   .sm-divider{height:1px;background:var(--line);margin:8px 0}
+  .ak-help{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--ink-soft);line-height:1.6;margin-top:12px}
+  .ak-help a{color:var(--teal);word-break:break-all}
+  .ak-row{display:flex;gap:8px;margin-top:16px}
+  .ak-row button{flex:1}
+  .ba-needkey{margin-top:10px;font-size:13px;color:var(--gold);display:flex;align-items:center;gap:10px;flex-wrap:wrap;line-height:1.5}
+  .ba-needkey button{border:none;background:rgba(198,255,74,.16);color:var(--gold);font-family:'Orbitron','Courier New',monospace;
+    font-weight:700;font-size:11px;letter-spacing:1px;padding:8px 14px;border-radius:6px;cursor:pointer}
+  .ba-needkey button:hover{background:rgba(198,255,74,.28)}
   .sm-foot{text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ink-soft);margin-top:18px;letter-spacing:1px;opacity:.6}
   .sm-sub{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--ink-soft);line-height:1.5;margin-bottom:16px}
   .lm-date{display:flex;align-items:center;gap:10px;margin-top:14px;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--ink-soft)}
@@ -549,7 +557,90 @@
   #arcade,#match,#cloze{display:none}
   .arcade-title{font-family:'Orbitron','Courier New',monospace;font-size:24px;font-weight:900;margin:0}
   .arcade-sub{color:var(--ink-soft);font-size:14px;margin:2px 4px 18px}
-  .arcade-grid{display:flex;flex-direction:column;gap:12px}
+  .arcade-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+
+  /* ARCADE 2.0 — level bar */
+  .arc-levelbar{display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap}
+  .arc-lv{border:none;background:rgba(57,255,20,.06);color:var(--ink-soft);font-family:'Orbitron','Courier New',monospace;
+    font-weight:700;font-size:12px;letter-spacing:1px;padding:9px 16px;border-radius:5px;cursor:pointer;transition:.15s}
+  .arc-lv:hover{background:rgba(57,255,20,.12);color:var(--ink)}
+  .arc-lv.on{background:rgba(57,255,20,.18);color:var(--neon);text-shadow:0 0 8px var(--neon);box-shadow:0 0 14px -5px var(--neon)}
+
+  /* game cards 2.0 */
+  .acard.ac2{position:relative;display:flex;flex-direction:column;gap:0;min-height:120px;padding:16px 16px 14px;
+    background:radial-gradient(120% 120% at 20% 0%, rgba(57,255,20,.1), rgba(0,0,0,0) 65%), #06170f;
+    animation:flashIn .4s both}
+  @keyframes flashIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .acard.ac2 .ac-ico{position:static;transform:none;width:auto;font-size:30px;margin-bottom:8px;filter:drop-shadow(0 0 8px var(--neon))}
+  .acard.ac2 .ac-nm{font-family:'Orbitron','Courier New',monospace;font-weight:700;font-size:15px;color:var(--ink);letter-spacing:.5px}
+  .acard.ac2 .ac-d{font-size:11.5px;color:var(--ink-soft);margin-top:4px;line-height:1.4;font-family:'Share Tech Mono',monospace}
+  .acard.ac2 .ac-lvs{display:flex;gap:4px;margin-top:10px;flex-wrap:wrap}
+  .ac-lvtag{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--teal);background:rgba(0,255,200,.1);
+    padding:2px 6px;border-radius:99px;letter-spacing:.5px}
+  .acard.ac2:hover{box-shadow:0 0 24px -6px var(--neon);transform:translateY(-3px)}
+
+  /* universal game engine */
+  #ggame{display:none}
+  .gg-combo{text-align:center;font-family:'Orbitron',monospace;font-weight:900;font-size:20px;color:var(--gold);
+    text-shadow:0 0 12px var(--gold);min-height:26px;opacity:0;transform:scale(.6);transition:.2s}
+  .gg-combo.show{opacity:1;transform:scale(1)}
+  .gg-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .gg-title{font-family:'Orbitron','Courier New',monospace;font-weight:900;font-size:16px;color:var(--neon);
+    letter-spacing:2px;text-shadow:0 0 12px rgba(57,255,20,.5)}
+  .gg-lives{font-size:13px;letter-spacing:2px}
+  .gg-stage{min-height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+  .gg-tag{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:1px;
+    background:rgba(0,255,200,.08);padding:5px 12px;border-radius:99px}
+  .gg-word-big{font-family:'Orbitron','Courier New',monospace;font-weight:900;font-size:38px;color:var(--neon);
+    text-shadow:0 0 20px rgba(57,255,20,.55);line-height:1.15;word-break:keep-all}
+  .gg-word-big.sm{font-size:24px;color:var(--ink)}
+  .gg-sub{font-family:'Rajdhani','Consolas',monospace;font-size:15px;color:var(--ink-soft);line-height:1.4}
+  .gg-sub b{color:var(--teal)}
+  .gg-sub2{font-size:13px;color:var(--ink-soft);opacity:.7;margin-top:-4px}
+  .gg-sentence{font-family:'Rajdhani',monospace;font-size:24px;color:var(--ink);line-height:1.4;letter-spacing:.5px}
+  .gg-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:440px}
+  .gg-2btn{display:flex;gap:12px;width:100%;max-width:380px;margin-top:6px}
+  .gg-opt{border:none;background:rgba(57,255,20,.06);color:var(--ink);border-radius:8px;padding:16px 12px;cursor:pointer;
+    font-family:'Rajdhani','Consolas',monospace;font-weight:600;font-size:17px;transition:.13s;
+    box-shadow:inset 0 0 16px -12px var(--neon);display:flex;flex-direction:column;align-items:center;gap:3px}
+  .gg-opt span{font-size:11px;color:var(--ink-soft);font-weight:400;font-family:'Share Tech Mono',monospace}
+  .gg-opt b{font-size:17px}
+  .gg-opt.mono{font-family:'Share Tech Mono',monospace;font-size:16px}
+  .gg-opt:hover{background:rgba(57,255,20,.14);box-shadow:0 0 18px -6px var(--neon);transform:translateY(-2px)}
+  .gg-opt:active{transform:scale(.97)}
+  .gg-opt.ok{background:rgba(57,255,20,.22);color:var(--neon);box-shadow:0 0 22px -4px var(--neon)}
+  .gg-opt.no{background:#2a0d0d;color:#FF5C5C;animation:shake .3s}
+  .gg-opt.gender-m{flex:1;background:rgba(0,160,255,.1);box-shadow:inset 0 0 16px -10px #00A0FF}
+  .gg-opt.gender-f{flex:1;background:rgba(255,80,160,.1);box-shadow:inset 0 0 16px -10px #FF50A0}
+  .gg-opt.gender-m b,.gg-opt.gender-f{font-size:26px;font-family:'Orbitron',monospace;font-weight:900}
+  .gg-replay{border:none;background:rgba(0,255,200,.12);color:var(--teal);font-family:'Share Tech Mono',monospace;
+    font-size:14px;padding:13px 26px;border-radius:99px;cursor:pointer;box-shadow:0 0 18px -6px var(--teal);transition:.15s}
+  .gg-replay:hover{background:rgba(0,255,200,.2)}
+  .gg-input{width:100%;max-width:380px;background:#021006;border:none;border-radius:8px;padding:16px;color:var(--neon);
+    font-family:'Share Tech Mono',monospace;font-size:20px;text-align:center;box-shadow:inset 0 0 20px -12px var(--neon);
+    outline:1px solid rgba(57,255,20,.2)}
+  .gg-input:focus{outline:1px solid var(--neon);box-shadow:0 0 20px -8px var(--neon)}
+  .gg-input.shake{animation:shake .3s}
+  .gg-submit{border:none;background:rgba(57,255,20,.16);color:var(--neon);font-family:'Orbitron','Courier New',monospace;
+    font-weight:700;font-size:14px;letter-spacing:1px;padding:13px 30px;border-radius:8px;cursor:pointer;text-shadow:0 0 8px var(--neon)}
+  .gg-submit:hover{background:rgba(57,255,20,.26)}
+  .gg-skip{border:none;background:none;color:var(--ink-soft);font-size:12px;cursor:pointer;text-decoration:underline;font-family:'Share Tech Mono',monospace}
+  .gg-result{display:none;flex-direction:column;align-items:center;text-align:center;animation:rise .3s both;padding-top:20px}
+  /* word rain */
+  .gg-rain{position:relative;width:100%;height:380px;overflow:hidden;border-radius:8px;
+    background:linear-gradient(180deg, rgba(57,255,20,.03), rgba(2,10,6,.6));box-shadow:inset 0 0 40px -20px var(--neon)}
+  .rain-chip{position:absolute;border:none;background:rgba(57,255,20,.1);color:var(--ink);font-family:'Rajdhani',monospace;
+    font-weight:600;font-size:16px;padding:6px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;
+    box-shadow:0 0 12px -6px var(--neon);transition:transform .1s}
+  .rain-chip:hover{background:rgba(57,255,20,.2)}
+  .rain-chip.hit{background:var(--neon);color:#021006;transform:scale(1.2)}
+  .rain-chip.miss{background:#2a0d0d;color:#FF5C5C}
+  .gg-rain-target{margin-top:14px;font-family:'Rajdhani',monospace;font-size:18px;color:var(--ink-soft)}
+  .gg-rain-target b{color:var(--gold);font-size:22px;text-shadow:0 0 10px var(--gold)}
+  /* memory matrix */
+  .gg-mem-show{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;max-width:440px}
+  .gg-mem-show span{font-family:'Orbitron','Courier New',monospace;font-weight:700;font-size:24px;color:var(--neon);
+    text-shadow:0 0 14px rgba(57,255,20,.5);background:rgba(57,255,20,.06);padding:12px 20px;border-radius:8px}
   .acard{display:block;text-align:left;border:none;background:radial-gradient(120% 120% at 20% 10%, rgba(57,255,20,.12), rgba(0,0,0,0) 70%), #06170f;border-radius:6px;
     padding:18px 20px;cursor:pointer;box-shadow:var(--shadow);transition:transform .1s,border-color .15s;position:relative;
     padding-left:74px;min-height:84px;font-family:'Rajdhani'}
@@ -1036,23 +1127,42 @@
       <button class="iconbtn" id="arcade-quit">✕</button>
       <h2 class="arcade-title">ARCADE</h2>
     </div>
-    <p class="arcade-sub">놀면서 외우는 5가지 모드. 매일 조금씩, 안 질리게.</p>
-    <div class="arcade-grid">
-      <button class="acard" id="ac-speed">
-        <div class="ac-ico">⚡</div><div class="ac-nm">SPEED QUIZ</div>
-        <div class="ac-d">60초 뜻 맞히기. 빠를수록 고득점</div></button>
-      <button class="acard" id="ac-match">
-        <div class="ac-ico">🃏</div><div class="ac-nm">CARD FLIP</div>
-        <div class="ac-d">프랑스어↔뜻 짝 맞추기 기억력 게임</div></button>
-      <button class="acard" id="ac-cloze">
-        <div class="ac-ico">📰</div><div class="ac-nm">FILL THE GAP</div>
-        <div class="ac-d">문장 속 빈칸 채우기. 독해·시험 대비</div></button>
-      <button class="acard" id="ac-build">
-        <div class="ac-ico">🧬</div><div class="ac-nm">SENTENCE BUILD</div>
-        <div class="ac-d">조각을 순서대로 맞춰 문장 완성. 어순·문법</div></button>
-      <button class="acard soon" disabled>
-        <div class="ac-ico">⌨️</div><div class="ac-nm">TYPE RUSH</div>
-        <div class="ac-d">// coming soon</div></button>
+    <p class="arcade-sub">게임만 해도 초급→C1까지. 레벨별로 골라 플레이하세요.</p>
+    <div class="arc-levelbar" id="arc-levelbar">
+      <button class="arc-lv on" data-lv="all">ALL</button>
+      <button class="arc-lv" data-lv="A1">A1</button>
+      <button class="arc-lv" data-lv="A2">A2</button>
+      <button class="arc-lv" data-lv="B1">B1</button>
+      <button class="arc-lv" data-lv="B2">B2</button>
+      <button class="arc-lv" data-lv="C1">C1</button>
+    </div>
+    <div class="arcade-grid" id="arcade-grid"></div>
+  </div>
+
+  <!-- ===== UNIVERSAL GAME ENGINE ===== -->
+  <div id="ggame">
+    <div class="gbar">
+      <button class="iconbtn" id="gg-quit">✕</button>
+      <div class="gtimer"><i id="gg-time-i"></i></div>
+      <div class="gscore" id="gg-score-wrap">◆<span id="gg-score">0</span></div>
+    </div>
+    <div class="gg-combo" id="gg-combo"></div>
+    <div class="gg-head">
+      <div class="gg-title" id="gg-title">GAME</div>
+      <div class="gg-lives" id="gg-lives"></div>
+    </div>
+    <div class="gg-stage" id="gg-stage"></div>
+    <div class="gg-result" id="gg-result">
+      <div class="gr-emoji" id="ggr-emoji">◆</div>
+      <div class="gr-title" id="ggr-title">CLEAR</div>
+      <div class="gr-score"><span id="ggr-score">0</span><small>점</small></div>
+      <div class="gr-stats">
+        <div class="ds"><span id="ggr-correct">0/0</span><b>CORRECT</b></div>
+        <div class="ds"><span id="ggr-acc">0%</span><b>ACCURACY</b></div>
+        <div class="ds"><span id="ggr-combo">×0</span><b>BEST COMBO</b></div>
+      </div>
+      <button class="cta read-cta" id="ggr-retry" style="margin-top:18px">↻ RETRY</button>
+      <button class="cta ghost" id="ggr-home" style="max-width:320px;margin:10px auto 0">◂ ARCADE</button>
     </div>
   </div>
 
@@ -1342,6 +1452,11 @@
     <div class="sm-row">
       <div class="sm-l"><b>🎯 목표 레벨</b><i id="sm-level-val">미설정</i></div>
       <button class="sm-btn" id="sm-reset-level">변경</button>
+    </div>
+
+    <div class="sm-row">
+      <div class="sm-l"><b>🔑 AI 기능 (API 키)</b><i id="sm-key-val">꺼짐</i></div>
+      <button class="sm-btn" id="sm-apikey">설정</button>
     </div>
 
     <div class="sm-divider"></div>
@@ -9674,17 +9789,19 @@ async function bdReveal(){
 async function fetchGrammar(ans, ko, gEl){
   if(!gEl) return;
   if(grammarCache[ans]){ renderGrammar(gEl, grammarCache[ans]); return; }
+  if(!hasApiKey()){
+    const parts=ans.replace(/\s+/g,' ').trim().split(' ').map(w=>({fr:w,pos:'',role:''}));
+    renderGrammar(gEl, {parts, structure:'', tip:'__NEEDKEY__'});
+    return;
+  }
   const prompt=`다음 프랑스어 문장을 한국 학습자가 "바로 외울 수 있게" 문법적으로 분해해줘.\n\n문장: "${ans}"\n뜻: "${ko}"\n\n각 단어(또는 묶음)별로 품사와 문법적 역할을 분석하고, 어순 핵심만 짚어줘. 간결한 한국어로. 반드시 아래 JSON만 출력(코드블록·설명 금지):\n{"parts":[{"fr":"단어","pos":"품사","role":"역할 한 줄"}],"structure":"어순 구조 한 줄","tip":"외울 핵심 한 줄"}`;
-  let lastTxt='';
   for(let attempt=0;attempt<2;attempt++){
     try{
       const txt=await callClaude(prompt, 1500);
-      lastTxt=txt||'';
       const j=parseJSON(txt);
       if(j&&j.parts&&j.parts.length){ grammarCache[ans]=j; renderGrammar(gEl, j); return; }
-    }catch(e){ lastTxt='[fetch error] '+(e&&e.message||e); }
+    }catch(e){}
   }
-  // graceful fallback: at least split tokens locally so user still sees a breakdown
   const parts=ans.replace(/\s+/g,' ').trim().split(' ').map(w=>({fr:w,pos:'',role:''}));
   const why=_lastApiError? (' ('+_lastApiError+')') : '';
   renderGrammar(gEl, {parts, structure:'', tip:'문법 분석을 불러오지 못했어요.'+why});
@@ -9696,8 +9813,11 @@ function renderGrammar(gEl, j){
   });
   html+='</div>';
   if(j.structure) html+=`<div class="ba-struct"><b>구조</b> ${esc(j.structure)}</div>`;
-  if(j.tip) html+=`<div class="ba-tip">💡 ${esc(j.tip)}</div>`;
+  if(j.tip==='__NEEDKEY__'){
+    html+=`<div class="ba-needkey">🔑 AI 문법 분석을 켜려면 API 키가 필요해요.<button id="ba-setkey">AI 켜기</button></div>`;
+  } else if(j.tip){ html+=`<div class="ba-tip">💡 ${esc(j.tip)}</div>`; }
   gEl.innerHTML=html;
+  const sk=el('ba-setkey'); if(sk) sk.onclick=()=>openApiKeyModal();
 }
 function buildOver(){
   bdActive=false; clearInterval(bdTimer);
@@ -9708,6 +9828,455 @@ function buildOver(){
   el('bd-result').style.display='flex'; confetti();
 }
 function buildQuit(){ bdActive=false; clearInterval(bdTimer); show('arcade'); }
+
+/* ============================================================
+   ARCADE 2.0 — UNIVERSAL GAME ENGINE + 10 GAMES (A1→C1)
+   ============================================================ */
+const GAME_DEFS=[
+  {id:'speed',  ico:'⚡', nm:'SPEED QUIZ',      d:'60초 뜻 맞히기. 빠를수록 고득점',        lv:['A1','A2','B1','B2','C1'], fn:()=>gameStart()},
+  {id:'match',  ico:'🃏', nm:'CARD FLIP',        d:'프랑스어↔뜻 짝 맞추기 기억력',           lv:['A1','A2','B1'],            fn:()=>matchStart()},
+  {id:'cloze',  ico:'📰', nm:'FILL THE GAP',     d:'문장 속 빈칸 채우기. 독해·시험',         lv:['B1','B2','C1'],            fn:()=>clozeStart()},
+  {id:'build',  ico:'🧬', nm:'SENTENCE BUILD',   d:'조각 순서 맞춰 문장 완성. 어순',         lv:['A2','B1','B2','C1'],       fn:()=>buildStart()},
+  {id:'gender', ico:'⚥', nm:'GENDER DASH',      d:'le? la? 명사 성별 빠르게 판단',          lv:['A1','A2'],                 fn:lv=>ggGender(lv)},
+  {id:'audio',  ico:'🎧', nm:'AUDIO HUNT',       d:'소리 듣고 맞는 단어 사냥. 청취',         lv:['A1','A2','B1'],            fn:lv=>ggAudio(lv)},
+  {id:'rain',   ico:'🌧', nm:'WORD RAIN',        d:'떨어지는 단어, 뜻과 매칭. 속도',         lv:['A1','A2','B1','B2'],       fn:lv=>ggRain(lv)},
+  {id:'conju',  ico:'🔩', nm:'CONJU-GRID',       d:'동사 활용 빈칸 채우기. 문법',            lv:['A1','A2','B1','B2'],       fn:lv=>ggConju(lv)},
+  {id:'spell',  ico:'⌨️', nm:'SPELL FORGE',      d:'소리 듣고 철자 입력. 받아쓰기',          lv:['A1','A2','B1','B2','C1'],  fn:lv=>ggSpell(lv)},
+  {id:'trans',  ico:'🔁', nm:'SPEED TRANSLATE',  d:'한→프 순간 번역 선택. 종합',             lv:['A1','A2','B1','B2','C1'],  fn:lv=>ggTrans(lv)},
+  {id:'accent', ico:'é',  nm:'ACCENT STRIKE',    d:'악센트 기호 맞히기. 정확도',             lv:['A2','B1','B2','C1'],       fn:lv=>ggAccent(lv)},
+  {id:'memory', ico:'🧠', nm:'MEMORY MATRIX',    d:'단어 잠깐 보고 복원. 기억력',            lv:['A2','B1','B2'],            fn:lv=>ggMemory(lv)},
+  {id:'listen', ico:'📡', nm:'DICTÉE BLITZ',     d:'문장 듣고 핵심어 받아쓰기. 청해',        lv:['B1','B2','C1'],            fn:lv=>ggDictee(lv)},
+  {id:'boss',   ico:'👑', nm:'BOSS RUSH',        d:'전 영역 난이도 상승. C1 종합전',         lv:['C1'],                      fn:lv=>ggBoss(lv)},
+];
+let arcLevel='all';
+function renderArcade(){
+  const grid=el('arcade-grid'); if(!grid) return; grid.innerHTML='';
+  const list=GAME_DEFS.filter(g=> arcLevel==='all' || g.lv.includes(arcLevel));
+  list.forEach((g,i)=>{
+    const b=document.createElement('button'); b.className='acard ac2'; b.style.animationDelay=(i*40)+'ms';
+    const lvtags=g.lv.map(l=>`<span class="ac-lvtag">${l}</span>`).join('');
+    b.innerHTML=`<div class="ac-ico">${g.ico}</div><div class="ac-nm">${g.nm}</div>
+      <div class="ac-d">${g.d}</div><div class="ac-lvs">${lvtags}</div>`;
+    b.onclick=()=>{ const lv = (arcLevel==='all')? (g.lv.includes('A1')?'A1':g.lv[0]) : arcLevel; g.fn(lv); };
+    grid.appendChild(b);
+  });
+  twe(grid);
+}
+
+/* ---- level-aware material pools ---- */
+function poolWords(lv){ // {fr, ko, ipa, gender?}
+  let a=0,b=500;
+  if(WORD_LEVEL_SLICE[lv]){ [a,b]=WORD_LEVEL_SLICE[lv]; }
+  const out=[];
+  for(let i=a;i<b;i++){ const c=BY_ID['word_'+i]; if(c) out.push(c); }
+  // include themed vocab matching level band too
+  ALL.forEach(c=>{ if(c.group==='vocab' && DECK_LEVEL[c.theme?('vocab_'+c.theme):'']===lv) out.push(c); });
+  return out.length?out:ALL.filter(c=>c.group==='word');
+}
+function poolVocabNouns(lv){ // nouns with le/la for gender game
+  return ALL.filter(c=>c.group==='vocab' && /^(le |la |l'|les |un |une )/i.test(c.answer));
+}
+function poolConj(lv){
+  const want = lv==='A1'?['present']: lv==='A2'?['present','passe','imparfait']: lv==='B1'?['futur','conditionnel','imparfait']:['subjonctif','conditionnel','futur'];
+  let arr=ALL.filter(c=>c.group==='conj' && want.includes(c.theme));
+  if(!arr.length) arr=ALL.filter(c=>c.group==='conj');
+  return arr;
+}
+function poolSent(lv){
+  const packMap={A2:[1],B1:[2,3],B2:[4,5,6],C1:[7,8,9,10]};
+  const packs=packMap[lv]||[2,3];
+  let arr=ALL.filter(c=>{ const m=c.id.match(/^sent_(\d+)$/); if(!m)return false; const n=Math.ceil((+m[1]+1)/600); return packs.includes(n); });
+  arr=arr.filter(c=>{ const w=c.answer.split(' ').length; return w>=3&&w<=9; });
+  return arr.length?arr:ALL.filter(c=>c.group==='sent');
+}
+function shuf(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=(Math.random()*(i+1))|0; [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function pick(a){ return a[(Math.random()*a.length)|0]; }
+function sampleN(a,n){ return shuf(a).slice(0,n); }
+function koOf(c){ return c.group==='sent'?(c.ko||c.front):c.front; }
+
+/* ---- shared engine state ---- */
+let GG={active:false,score:0,combo:0,best:0,correct:0,total:0,lives:0,maxLives:0,timer:null,end:0,dur:0,onTimeout:null,lvl:'A1',retry:null};
+function ggBoot(opt){
+  GG={active:true,score:0,combo:0,best:0,correct:0,total:0,
+      lives:opt.lives||0,maxLives:opt.lives||0,timer:null,end:0,dur:opt.dur||0,
+      onTimeout:opt.onTimeout||null,lvl:opt.lvl||'A1',retry:opt.retry||null,title:opt.title||'GAME'};
+  el('gg-title').textContent=opt.title+(opt.lvl?(' · '+opt.lvl):'');
+  el('gg-score').textContent='0'; el('gg-combo').classList.remove('show');
+  el('gg-result').style.display='none';
+  el('gg-score-wrap').style.display = opt.hideScore?'none':'';
+  ggRenderLives();
+  el('gg-time-i').parentElement.style.visibility = opt.dur?'visible':'hidden';
+  show('ggame');
+  if(opt.dur){ GG.end=Date.now()+opt.dur; clearInterval(GG.timer); GG.timer=setInterval(ggTick,100); }
+}
+function ggTick(){ const left=Math.max(0,GG.end-Date.now()); el('gg-time-i').style.width=(left/GG.dur*100)+'%'; if(left<=0){ clearInterval(GG.timer); if(GG.onTimeout)GG.onTimeout(); } }
+function ggRenderLives(){
+  const e=el('gg-lives'); if(!e) return;
+  if(!GG.maxLives){ e.innerHTML=''; return; }
+  let s=''; for(let i=0;i<GG.maxLives;i++) s+= i<GG.lives?'🟢':'⚫';
+  e.textContent=s;
+}
+function ggAddScore(base){
+  const mult=1+Math.min(GG.combo,9)*0.12;
+  const gain=Math.round(base*mult);
+  GG.score+=gain; el('gg-score').textContent=GG.score; return gain;
+}
+function ggGood(card, base){
+  GG.combo++; GG.best=Math.max(GG.best,GG.combo); GG.correct++; GG.total++;
+  ggAddScore(base||100);
+  if(card) grade(card.id,'good'); S.stats.xp+=4;
+  sound(GG.combo>=5?'lucky':'good');
+  const c=el('gg-combo'); if(GG.combo>=2){ c.textContent='🔥 ×'+GG.combo; c.classList.add('show'); } 
+  save();
+}
+function ggBad(card){
+  GG.combo=0; GG.total++; el('gg-combo').classList.remove('show');
+  if(card) grade(card.id,'again');
+  sound('again');
+  if(GG.maxLives){ GG.lives--; ggRenderLives(); if(GG.lives<=0){ ggOver(); return false; } }
+  save(); return true;
+}
+function ggOver(){
+  GG.active=false; clearInterval(GG.timer);
+  const acc=GG.total?Math.round(GG.correct/GG.total*100):0;
+  el('ggr-score').textContent=GG.score;
+  el('ggr-correct').textContent=GG.correct+'/'+GG.total;
+  el('ggr-acc').textContent=acc+'%';
+  el('ggr-combo').textContent='×'+GG.best;
+  el('ggr-emoji').textContent= acc>=80?'🏆':acc>=50?'✨':'💪';
+  el('ggr-title').textContent= acc>=80?'PERFECT RUN':acc>=50?'CLEAR':'GAME OVER';
+  el('c-lvl').textContent=levelFor(S.stats.xp);
+  el('gg-result').style.display='flex';
+  if(acc>=50) confetti();
+}
+function ggStage(html){ el('gg-stage').innerHTML=html; }
+function ggQuit(){ GG.active=false; clearInterval(GG.timer); show('arcade'); }
+
+/* ===== GAME 1: GENDER DASH (le/la) ===== */
+let ggGenderPool=[];
+function ggGender(lv){
+  ggGenderPool=shuf(poolVocabNouns(lv));
+  if(!ggGenderPool.length){ toast('이 레벨엔 명사가 부족해요'); return; }
+  ggBoot({title:'GENDER DASH',lvl:lv,dur:45000,onTimeout:ggOver,retry:()=>ggGender(lv)});
+  ggGenderNext();
+}
+function ggGenderNext(){
+  if(!GG.active) return;
+  const c=pick(ggGenderPool);
+  const m=c.answer.match(/^(le|la|l'|les|un|une)\s?/i); const art=(m?m[1]:'').toLowerCase();
+  const noun=c.answer.replace(/^(le|la|l'|les|un|une)\s?/i,'');
+  ggStage(`<div class="gg-word-big">${esc(noun)}</div>
+    <div class="gg-sub">${esc(koOf(c))}</div>
+    <div class="gg-2btn">
+      <button class="gg-opt gender-m" data-g="le">LE <span>남성</span></button>
+      <button class="gg-opt gender-f" data-g="la">LA <span>여성</span></button>
+    </div>`);
+  const ans = (art==='le'||art==='un')?'le':(art==='la'||art==='une')?'la':'?';
+  el('gg-stage').querySelectorAll('.gg-opt').forEach(b=>{ b.onclick=()=>{
+    if(!GG.active)return;
+    const ok = (ans==='?') ? true : (b.dataset.g===ans);
+    if(ok){ b.classList.add('ok'); speak(c.answer); ggGood(c,120); setTimeout(()=>{if(GG.active)ggGenderNext();},420); }
+    else { b.classList.add('no'); if(ggBad(c)) setTimeout(()=>{if(GG.active)ggGenderNext();},650); }
+  };});
+}
+
+/* ===== GAME 2: AUDIO HUNT ===== */
+let ggAudioPool=[];
+function ggAudio(lv){
+  ggAudioPool=shuf(poolWords(lv)).filter(c=>c.answer&&c.answer.length<=18);
+  if(ggAudioPool.length<4){ toast('단어가 부족해요'); return; }
+  ggBoot({title:'AUDIO HUNT',lvl:lv,dur:60000,onTimeout:ggOver,retry:()=>ggAudio(lv)});
+  ggAudioNext();
+}
+function ggAudioNext(){
+  if(!GG.active) return;
+  const c=pick(ggAudioPool);
+  const opts=shuf([c,...sampleN(ggAudioPool.filter(x=>x!==c),3)]);
+  ggStage(`<button class="gg-replay" id="gg-replay">🔊 다시 듣기</button>
+    <div class="gg-sub">소리를 듣고 맞는 단어를 고르세요</div>
+    <div class="gg-grid2" id="gg-opts"></div>`);
+  speak(c.answer);
+  el('gg-replay').onclick=()=>speak(c.answer);
+  const wrap=el('gg-opts');
+  opts.forEach(o=>{ const b=document.createElement('button'); b.className='gg-opt'; b.innerHTML=`<b>${esc(o.answer)}</b><span>${esc(koOf(o))}</span>`;
+    b.onclick=()=>{ if(!GG.active)return;
+      if(o===c){ b.classList.add('ok'); ggGood(c,110); setTimeout(()=>{if(GG.active)ggAudioNext();},480); }
+      else { b.classList.add('no'); if(ggBad(c)) setTimeout(()=>{if(GG.active)ggAudioNext();},650); }
+    }; wrap.appendChild(b); });
+}
+
+/* ===== GAME 3: WORD RAIN ===== */
+let ggRainPool=[], ggRainTimer=null, ggRainSpawn=null, ggRainTarget=null, ggRainActive=[];
+function ggRain(lv){
+  ggRainPool=shuf(poolWords(lv)).filter(c=>c.answer&&c.answer.length<=16);
+  if(ggRainPool.length<6){ toast('단어가 부족해요'); return; }
+  ggBoot({title:'WORD RAIN',lvl:lv,lives:3,retry:()=>ggRain(lv)});
+  ggStage(`<div class="gg-rain" id="gg-rain"></div>
+    <div class="gg-rain-target" id="gg-rain-target"></div>`);
+  ggRainActive=[];
+  ggRainNewTarget();
+  clearInterval(ggRainSpawn); ggRainSpawn=setInterval(()=>ggRainSpawnOne(),1400);
+  clearInterval(ggRainTimer); ggRainTimer=setInterval(()=>ggRainFall(),50);
+}
+function ggRainNewTarget(){
+  ggRainTarget=pick(ggRainPool);
+  const t=el('gg-rain-target'); if(t) t.innerHTML=`찾기 → <b>${esc(koOf(ggRainTarget))}</b>`;
+}
+function ggRainSpawnOne(){
+  if(!GG.active){ clearInterval(ggRainSpawn); return; }
+  const rain=el('gg-rain'); if(!rain) return;
+  const useTarget = Math.random()<0.4 || !ggRainActive.some(o=>o.c===ggRainTarget);
+  const c= useTarget? ggRainTarget : pick(ggRainPool);
+  const chip=document.createElement('button'); chip.className='rain-chip'; chip.textContent=c.answer;
+  chip.style.left=(5+Math.random()*80)+'%'; chip.style.top='-8%';
+  const obj={c,chip,y:-8};
+  chip.onclick=()=>{ if(!GG.active)return;
+    if(c===ggRainTarget){ chip.classList.add('hit'); speak(c.answer); ggGood(c,90); ggRainRemove(obj); ggRainNewTarget(); }
+    else { chip.classList.add('miss'); ggBad(c); ggRainRemove(obj); }
+  };
+  rain.appendChild(chip); ggRainActive.push(obj);
+}
+function ggRainRemove(obj){ obj.chip.remove(); ggRainActive=ggRainActive.filter(o=>o!==obj); }
+function ggRainFall(){
+  if(!GG.active){ clearInterval(ggRainTimer); return; }
+  const rain=el('gg-rain'); if(!rain) return;
+  ggRainActive.slice().forEach(o=>{
+    o.y+=0.7; o.chip.style.top=o.y+'%';
+    if(o.y>96){
+      if(o.c===ggRainTarget){ if(!ggBad(o.c)){ ggRainStop(); } ggRainNewTarget(); }
+      ggRainRemove(o);
+    }
+  });
+}
+function ggRainStop(){ clearInterval(ggRainTimer); clearInterval(ggRainSpawn); }
+
+/* ===== GAME 4: CONJU-GRID ===== */
+let ggConjuPool=[];
+function ggConju(lv){
+  ggConjuPool=shuf(poolConj(lv));
+  if(ggConjuPool.length<4){ toast('활용 데이터가 부족해요'); return; }
+  ggBoot({title:'CONJU-GRID',lvl:lv,dur:70000,onTimeout:ggOver,retry:()=>ggConju(lv)});
+  ggConjuNext();
+}
+function ggConjuNext(){
+  if(!GG.active) return;
+  const c=pick(ggConjuPool);
+  const correct=c.answer;
+  const distract=sampleN(ggConjuPool.filter(x=>x!==c&&x.theme===c.theme),3).map(x=>x.answer);
+  const opts=shuf([correct,...distract]);
+  ggStage(`<div class="gg-tag">${esc(c.tag||'')}</div>
+    <div class="gg-word-big">${esc(c.front)}</div>
+    <div class="gg-sub">빈칸에 알맞은 활용형은? <b>${esc(c.frontsub||'')}</b></div>
+    <div class="gg-grid2" id="gg-opts"></div>`);
+  const wrap=el('gg-opts');
+  opts.forEach(o=>{ const b=document.createElement('button'); b.className='gg-opt'; b.textContent=o;
+    b.onclick=()=>{ if(!GG.active)return;
+      if(o===correct){ b.classList.add('ok'); speak(correct); ggGood(c,130); setTimeout(()=>{if(GG.active)ggConjuNext();},520); }
+      else { b.classList.add('no'); if(ggBad(c)) setTimeout(()=>{if(GG.active)ggConjuNext();},650); }
+    }; wrap.appendChild(b); });
+}
+
+/* ===== GAME 5: SPELL FORGE ===== */
+let ggSpellPool=[];
+function ggSpell(lv){
+  ggSpellPool=shuf(poolWords(lv)).filter(c=>c.answer&&c.answer.length<=14&&!/\s/.test(c.answer));
+  if(ggSpellPool.length<4){ toast('단어가 부족해요'); return; }
+  ggBoot({title:'SPELL FORGE',lvl:lv,lives:3,retry:()=>ggSpell(lv)});
+  ggSpellNext();
+}
+function ggSpellNext(){
+  if(!GG.active) return;
+  const c=pick(ggSpellPool);
+  ggStage(`<button class="gg-replay" id="gg-replay">🔊 다시 듣기</button>
+    <div class="gg-sub">들리는 단어를 입력하세요 · <b>${esc(koOf(c))}</b></div>
+    <input class="gg-input" id="gg-spell-in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="taper ici...">
+    <button class="gg-submit" id="gg-spell-go">확인 ▸</button>
+    <button class="gg-skip" id="gg-spell-skip">모르겠어요 (정답 보기)</button>`);
+  speak(c.answer);
+  const inp=el('gg-spell-in'); inp.focus();
+  el('gg-replay').onclick=()=>speak(c.answer);
+  const submit=()=>{ if(!GG.active)return;
+    const v=inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+    if(v===c.answer.toLowerCase()){ ggGood(c,140); toast('✓ '+c.answer); setTimeout(()=>{if(GG.active)ggSpellNext();},420); }
+    else { inp.classList.add('shake'); if(ggBad(c)){ toast('정답: '+c.answer); setTimeout(()=>{if(GG.active)ggSpellNext();},900);} }
+  };
+  el('gg-spell-go').onclick=submit;
+  inp.onkeydown=(e)=>{ if(e.key==='Enter') submit(); };
+  el('gg-spell-skip').onclick=()=>{ if(!GG.active)return; toast('정답: '+c.answer); speak(c.answer); if(ggBad(c)) setTimeout(()=>{if(GG.active)ggSpellNext();},900); };
+}
+
+/* ===== GAME 6: SPEED TRANSLATE ===== */
+let ggTransPool=[];
+function ggTrans(lv){
+  ggTransPool=shuf([...poolWords(lv),...poolSent(lv)]).filter(c=>c.answer&&c.answer.length<=40);
+  if(ggTransPool.length<4){ toast('데이터가 부족해요'); return; }
+  ggBoot({title:'SPEED TRANSLATE',lvl:lv,dur:60000,onTimeout:ggOver,retry:()=>ggTrans(lv)});
+  ggTransNext();
+}
+function ggTransNext(){
+  if(!GG.active) return;
+  const c=pick(ggTransPool);
+  const opts=shuf([c,...sampleN(ggTransPool.filter(x=>x!==c),3)]);
+  ggStage(`<div class="gg-sub">이 뜻의 프랑스어는?</div>
+    <div class="gg-word-big sm">${esc(koOf(c))}</div>
+    <div class="gg-grid2" id="gg-opts"></div>`);
+  const wrap=el('gg-opts');
+  opts.forEach(o=>{ const b=document.createElement('button'); b.className='gg-opt'; b.textContent=o.answer;
+    b.onclick=()=>{ if(!GG.active)return;
+      if(o===c){ b.classList.add('ok'); speak(c.answer); ggGood(c,110); setTimeout(()=>{if(GG.active)ggTransNext();},460); }
+      else { b.classList.add('no'); if(ggBad(c)) setTimeout(()=>{if(GG.active)ggTransNext();},620); }
+    }; wrap.appendChild(b); });
+}
+
+/* ===== GAME 7: ACCENT STRIKE ===== */
+let ggAccentPool=[];
+function ggAccent(lv){
+  ggAccentPool=shuf(poolWords(lv)).filter(c=>/[àâäéèêëîïôöùûüçœ]/i.test(c.answer)&&c.answer.length<=16);
+  if(ggAccentPool.length<4){ toast('악센트 단어가 부족해요'); return; }
+  ggBoot({title:'ACCENT STRIKE',lvl:lv,dur:55000,onTimeout:ggOver,retry:()=>ggAccent(lv)});
+  ggAccentNext();
+}
+function stripAccent(s){ return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/œ/g,'oe'); }
+function ggAccentNext(){
+  if(!GG.active) return;
+  const c=pick(ggAccentPool);
+  const correct=c.answer;
+  const variants=new Set([correct]);
+  variants.add(stripAccent(correct));
+  variants.add(correct.replace(/é/g,'è').replace(/è/g,'é'));
+  variants.add(correct.replace(/[àâ]/g,'a').replace(/[ôö]/g,'o'));
+  const opts=shuf([...variants]).slice(0,4);
+  ggStage(`<button class="gg-replay" id="gg-replay">🔊 듣기</button>
+    <div class="gg-sub">악센트가 정확한 철자는? · <b>${esc(koOf(c))}</b></div>
+    <div class="gg-grid2" id="gg-opts"></div>`);
+  speak(correct);
+  el('gg-replay').onclick=()=>speak(correct);
+  const wrap=el('gg-opts');
+  opts.forEach(o=>{ const b=document.createElement('button'); b.className='gg-opt mono'; b.textContent=o;
+    b.onclick=()=>{ if(!GG.active)return;
+      if(o===correct){ b.classList.add('ok'); ggGood(c,130); setTimeout(()=>{if(GG.active)ggAccentNext();},480); }
+      else { b.classList.add('no'); if(ggBad(c)) setTimeout(()=>{if(GG.active)ggAccentNext();},620); }
+    }; wrap.appendChild(b); });
+}
+
+/* ===== GAME 8: MEMORY MATRIX ===== */
+let ggMemPool=[];
+function ggMemory(lv){
+  ggMemPool=shuf(poolWords(lv)).filter(c=>c.answer&&c.answer.length<=14);
+  if(ggMemPool.length<8){ toast('단어가 부족해요'); return; }
+  ggBoot({title:'MEMORY MATRIX',lvl:lv,lives:3,retry:()=>ggMemory(lv)});
+  ggMemRound();
+}
+function ggMemRound(){
+  if(!GG.active) return;
+  const set=sampleN(ggMemPool,4);
+  ggStage(`<div class="gg-sub">단어들을 외우세요… (3초)</div>
+    <div class="gg-mem-show" id="gg-mem-show">${set.map(c=>`<span>${esc(c.answer)}</span>`).join('')}</div>`);
+  let t=3; const sub=el('gg-stage').querySelector('.gg-sub');
+  const iv=setInterval(()=>{ t--; if(sub)sub.textContent=`단어들을 외우세요… (${t}초)`; if(t<=0){ clearInterval(iv); ggMemQuiz(set); } },1000);
+}
+function ggMemQuiz(set){
+  if(!GG.active) return;
+  const target=pick(set);
+  const decoys=sampleN(ggMemPool.filter(c=>!set.includes(c)),2);
+  const opts=shuf([target,...decoys]);
+  ggStage(`<div class="gg-sub">방금 본 단어는? · <b>${esc(koOf(target))}</b></div>
+    <div class="gg-grid2" id="gg-opts"></div>`);
+  const wrap=el('gg-opts');
+  opts.forEach(o=>{ const b=document.createElement('button'); b.className='gg-opt mono'; b.textContent=o.answer;
+    b.onclick=()=>{ if(!GG.active)return;
+      if(o===target){ b.classList.add('ok'); speak(target.answer); ggGood(target,150); setTimeout(()=>{if(GG.active)ggMemRound();},560); }
+      else { b.classList.add('no'); if(ggBad(target)) setTimeout(()=>{if(GG.active)ggMemRound();},700); }
+    }; wrap.appendChild(b); });
+}
+
+/* ===== GAME 9: DICTÉE BLITZ ===== */
+let ggDicteePool=[];
+function ggDictee(lv){
+  ggDicteePool=shuf(poolSent(lv)).filter(c=>c.answer&&c.answer.split(' ').length>=3&&c.answer.split(' ').length<=8);
+  if(ggDicteePool.length<4){ toast('문장이 부족해요'); return; }
+  ggBoot({title:'DICTÉE BLITZ',lvl:lv,lives:3,retry:()=>ggDictee(lv)});
+  ggDicteeNext();
+}
+function ggDicteeNext(){
+  if(!GG.active) return;
+  const c=pick(ggDicteePool);
+  const words=c.answer.replace(/[.?!,]/g,'').split(' ').filter(w=>w.length>=3);
+  const key=pick(words.length?words:c.answer.split(' '));
+  const masked=c.answer.split(' ').map(w=> w.replace(/[.?!,]/g,'')===key?'____':w).join(' ');
+  ggStage(`<button class="gg-replay" id="gg-replay">🔊 문장 듣기</button>
+    <div class="gg-sub">문장을 듣고 빈칸의 단어를 입력</div>
+    <div class="gg-sentence">${esc(masked)}</div>
+    <div class="gg-sub2">${esc(koOf(c))}</div>
+    <input class="gg-input" id="gg-dic-in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="mot manquant...">
+    <button class="gg-submit" id="gg-dic-go">확인 ▸</button>`);
+  speak(c.answer);
+  const inp=el('gg-dic-in'); inp.focus();
+  el('gg-replay').onclick=()=>speak(c.answer);
+  const submit=()=>{ if(!GG.active)return;
+    const v=inp.value.trim().toLowerCase();
+    if(v===key.toLowerCase()){ ggGood(c,160); toast('✓ '+key); setTimeout(()=>{if(GG.active)ggDicteeNext();},500); }
+    else { inp.classList.add('shake'); if(ggBad(c)){ toast('정답: '+key); setTimeout(()=>{if(GG.active)ggDicteeNext();},950);} }
+  };
+  el('gg-dic-go').onclick=submit; inp.onkeydown=(e)=>{ if(e.key==='Enter')submit(); };
+}
+
+/* ===== GAME 10: BOSS RUSH (C1 mixed) ===== */
+let ggBossModes=[], ggBossN=0;
+function ggBoss(lv){
+  ggBossModes=[ggBossTrans,ggBossConju,ggBossDictee,ggBossAccent];
+  ggBossN=0;
+  ggBoot({title:'BOSS RUSH',lvl:'C1',lives:3,retry:()=>ggBoss(lv)});
+  ggBossNext();
+}
+function ggBossNext(){
+  if(!GG.active) return;
+  ggBossN++;
+  if(ggBossN>20){ ggOver(); return; }
+  pick(ggBossModes)();
+}
+function ggBossTrans(){
+  const pool=poolSent('C1'); const c=pick(pool);
+  const opts=shuf([c,...sampleN(pool.filter(x=>x!==c),3)]);
+  ggStage(`<div class="gg-tag">WAVE ${ggBossN}/20 · 번역</div><div class="gg-word-big sm">${esc(koOf(c))}</div><div class="gg-grid2" id="gg-opts"></div>`);
+  bindBossOpts(c,opts,o=>o.answer);
+}
+function ggBossConju(){
+  const pool=poolConj('B2'); const c=pick(pool);
+  const opts=shuf([c,...sampleN(pool.filter(x=>x!==c&&x.theme===c.theme),3)]);
+  ggStage(`<div class="gg-tag">WAVE ${ggBossN}/20 · 활용</div><div class="gg-word-big">${esc(c.front)}</div><div class="gg-sub">${esc(c.frontsub||'')}</div><div class="gg-grid2" id="gg-opts"></div>`);
+  bindBossOpts(c,opts,o=>o.answer);
+}
+function ggBossDictee(){
+  const pool=poolSent('C1'); const c=pick(pool);
+  const words=c.answer.replace(/[.?!,]/g,'').split(' ').filter(w=>w.length>=3); const key=pick(words.length?words:c.answer.split(' '));
+  const masked=c.answer.split(' ').map(w=> w.replace(/[.?!,]/g,'')===key?'____':w).join(' ');
+  ggStage(`<div class="gg-tag">WAVE ${ggBossN}/20 · 받아쓰기</div><button class="gg-replay" id="gg-replay">🔊 듣기</button>
+    <div class="gg-sentence">${esc(masked)}</div><input class="gg-input" id="gg-dic-in" autocomplete="off" spellcheck="false"><button class="gg-submit" id="gg-dic-go">확인 ▸</button>`);
+  speak(c.answer); el('gg-replay').onclick=()=>speak(c.answer);
+  const inp=el('gg-dic-in'); inp.focus();
+  const submit=()=>{ if(!GG.active)return; if(inp.value.trim().toLowerCase()===key.toLowerCase()){ ggGood(c,200); setTimeout(()=>{if(GG.active)ggBossNext();},400);} else { inp.classList.add('shake'); if(ggBad(c)){toast('정답: '+key);setTimeout(()=>{if(GG.active)ggBossNext();},850);} } };
+  el('gg-dic-go').onclick=submit; inp.onkeydown=e=>{if(e.key==='Enter')submit();};
+}
+function ggBossAccent(){
+  const pool=poolWords('C1').filter(c=>/[àâäéèêëîïôöùûüçœ]/i.test(c.answer));
+  if(pool.length<4){ ggBossNext(); return; }
+  const c=pick(pool); const correct=c.answer;
+  const opts=shuf([correct, stripAccent(correct), correct.replace(/é/g,'è'), correct.replace(/[àâ]/g,'a')].filter((v,i,a)=>a.indexOf(v)===i)).slice(0,4);
+  ggStage(`<div class="gg-tag">WAVE ${ggBossN}/20 · 악센트</div><button class="gg-replay" id="gg-replay">🔊 듣기</button><div class="gg-sub">${esc(koOf(c))}</div><div class="gg-grid2" id="gg-opts"></div>`);
+  speak(correct); el('gg-replay').onclick=()=>speak(correct);
+  const wrap=el('gg-opts');
+  opts.forEach(o=>{ const b=document.createElement('button'); b.className='gg-opt mono'; b.textContent=o;
+    b.onclick=()=>{ if(!GG.active)return; if(o===correct){ b.classList.add('ok'); ggGood(c,180); setTimeout(()=>{if(GG.active)ggBossNext();},450);} else { b.classList.add('no'); if(ggBad(c)) setTimeout(()=>{if(GG.active)ggBossNext();},600);} }; wrap.appendChild(b); });
+}
+function bindBossOpts(c,opts,getText){
+  const wrap=el('gg-opts');
+  opts.forEach(o=>{ const b=document.createElement('button'); b.className='gg-opt'; b.textContent=getText(o);
+    b.onclick=()=>{ if(!GG.active)return;
+      if(o===c){ b.classList.add('ok'); speak(c.answer); ggGood(c,180); setTimeout(()=>{if(GG.active)ggBossNext();},480); }
+      else { b.classList.add('no'); if(ggBad(c)) setTimeout(()=>{if(GG.active)ggBossNext();},620); }
+    }; wrap.appendChild(b); });
+}
 
 /* ============ DAILY ARTICLE (reading) ============ */
 let rdLevel='B1', rdTopic='actualité / société', rdData=null, rdLoadInt=null;
@@ -9723,6 +10292,7 @@ function rdSeg(wrapId, setter){
   });
 }
 async function generateArticle(){
+  if(!ensureApiKey()) return;
   el('rd-setup').style.display='none';
   el('rd-article').style.display='none';
   el('rd-loading').style.display='block';
@@ -9972,15 +10542,27 @@ function findUnit(target,key){
 
 /* ============ WRITING PRACTICE ============ */
 let _lastApiError='';
+function getApiKey(){ try{ return localStorage.getItem('francais:apikey')||''; }catch(e){ return ''; } }
+function setApiKey(k){ try{ if(k) localStorage.setItem('francais:apikey',k); else localStorage.removeItem('francais:apikey'); }catch(e){} }
+function hasApiKey(){ return !!getApiKey(); }
 async function callClaude(prompt, maxTok){
   _lastApiError='';
+  const key=getApiKey();
+  if(!key){ _lastApiError='NO_KEY'; return null; }
   let res;
   try{
     res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST", headers:{"Content-Type":"application/json"},
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "x-api-key":key,
+        "anthropic-version":"2023-06-01",
+        "anthropic-dangerous-direct-browser-access":"true"
+      },
       body:JSON.stringify({ model:"claude-sonnet-4-5", max_tokens:maxTok||600, messages:[{role:"user",content:prompt}] })
     });
-  }catch(e){ _lastApiError='네트워크 오류: '+(e&&e.message||e); return null; }
+  }catch(e){ _lastApiError='네트워크/CORS 오류: '+(e&&e.message||e); return null; }
+  if(res.status===401){ _lastApiError='API 키가 올바르지 않아요 (401)'; return null; }
   if(!res.ok){
     let body=''; try{ body=await res.text(); }catch(e){}
     _lastApiError='HTTP '+res.status+(body?' · '+body.slice(0,160):'');
@@ -9991,6 +10573,39 @@ async function callClaude(prompt, maxTok){
   const txt=(data.content||[]).map(b=> (b&&b.type==='text') ? b.text : (typeof b==='string'?b:'')).join('').trim();
   if(!txt){ _lastApiError='빈 응답'; return null; }
   return txt;
+}
+// API key entry modal
+function openApiKeyModal(){
+  let m=el('apikey-modal');
+  if(!m){ m=document.createElement('div'); m.id='apikey-modal'; m.className='settings-modal'; document.body.appendChild(m); }
+  const cur=getApiKey();
+  m.innerHTML=`<div class="sm-card" style="max-width:500px">
+    <button class="sm-close" id="ak-close">✕</button>
+    <div class="sm-title">🔑 AI 기능 활성화</div>
+    <div class="sm-sub">문법 분석·작문 첨삭·기사 생성은 Claude AI를 써요. 본인 API 키를 넣으면 켜져요. 키는 <b>이 브라우저에만</b> 저장되고 코드·서버엔 안 올라가요.</div>
+    <input type="password" id="ak-input" placeholder="sk-ant-..." value="${esc(cur)}"
+      style="width:100%;background:var(--paper-2);border:none;border-radius:6px;padding:13px;color:var(--ink);font-family:'Share Tech Mono',monospace;font-size:13px;box-sizing:border-box">
+    <div class="ak-help">
+      🔗 키 발급: <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com/settings/keys</a><br>
+      ⚠️ 이 키는 공개 사이트(Vercel)에 배포된 앱에서 쓰여요. 본인만 쓰는 URL로 관리하고, 한도(budget)를 걸어두는 걸 권해요.
+    </div>
+    <div class="ak-row">
+      <button class="sm-btn" id="ak-save">저장하고 켜기</button>
+      ${cur?'<button class="sm-btn-warn" id="ak-clear">키 삭제</button>':''}
+    </div>
+  </div>`;
+  m.classList.add('open');
+  el('ak-close').onclick=()=>m.classList.remove('open');
+  m.onclick=(e)=>{ if(e.target===m) m.classList.remove('open'); };
+  el('ak-save').onclick=()=>{ const v=el('ak-input').value.trim(); setApiKey(v); m.classList.remove('open');
+    if(v) toast('🔑 AI 기능 켜짐!'); };
+  const cl=el('ak-clear'); if(cl) cl.onclick=()=>{ setApiKey(''); m.classList.remove('open'); toast('키 삭제됨'); };
+}
+// guard: ensure key exists before an AI action; returns true if ok
+function ensureApiKey(){
+  if(hasApiKey()) return true;
+  openApiKeyModal();
+  return false;
 }
 function parseJSON(txt){
   if(!txt) return null;
@@ -10007,6 +10622,7 @@ function writeOpen(){
   show('write');
 }
 async function genWriteTask(){
+  if(!ensureApiKey()) return;
   el('wr-setup').style.display='none'; el('wr-task').style.display='none'; el('wr-loading').style.display='block';
   const msgs=['문제를 고르는 중…','수준에 맞추는 중…','힌트를 다듬는 중…']; let i=0; el('wr-loadmsg').textContent=msgs[0];
   clearInterval(wrLoadInt); wrLoadInt=setInterval(()=>{i=(i+1)%msgs.length;el('wr-loadmsg').textContent=msgs[i];},1800);
@@ -10031,6 +10647,7 @@ function wrErr(){
   el('wr-loading').appendChild(b);
 }
 async function submitWriting(){
+  if(!ensureApiKey()) return;
   const ans=el('wr-input').value.trim();
   if(!ans){ el('wr-input').focus(); return; }
   el('wr-submit').style.display='none';
@@ -10750,10 +11367,12 @@ async function translateSentence(c){
     return t||null;
   }catch(e){ return null; }
 }
-function show(v){ ['home','study','done','game','arcade','match','cloze','build','read','write','test','stats','curri'].forEach(x=>el(x).style.display=(x===v?'block':'none'));
-  const active=['study','game','match','cloze','build','read','write','test'];
+function show(v){ ['home','study','done','game','arcade','match','cloze','build','read','write','test','stats','curri','ggame'].forEach(x=>el(x).style.display=(x===v?'block':'none'));
+  const active=['study','game','match','cloze','build','read','write','test','ggame'];
   if(active.includes(v)) timeStart(); else timeStop();
-  if(v==='home') renderHome(); window.scrollTo(0,0); }
+  if(v==='home') renderHome();
+  if(v==='arcade') renderArcade();
+  window.scrollTo(0,0); }
 
 /* ============ CONFETTI / BURST ============ */
 const cv=el('fx'), ctx=cv.getContext('2d'); let parts=[];
@@ -10812,10 +11431,15 @@ el('rd-toggle-gloss').onclick=()=>{ glossOn=!glossOn; el('rd-toggle-gloss').clas
 rdSeg('rd-level', v=>rdLevel=v);
 rdSeg('rd-topic', v=>rdTopic=v);
 el('arcade-quit').onclick=()=>show('home');
-el('ac-speed').onclick=()=>gameStart();
-el('ac-match').onclick=()=>matchStart();
-el('ac-cloze').onclick=()=>clozeStart();
-el('ac-build').onclick=()=>buildStart();
+// arcade level filter
+el('arc-levelbar').querySelectorAll('.arc-lv').forEach(b=>{ b.onclick=()=>{
+  el('arc-levelbar').querySelectorAll('.arc-lv').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); arcLevel=b.dataset.lv; renderArcade();
+};});
+// universal game engine controls
+el('gg-quit').onclick=()=>ggQuit();
+el('ggr-home').onclick=()=>show('arcade');
+el('ggr-retry').onclick=()=>{ if(GG.retry) GG.retry(); };
 el('open-build').onclick=()=>buildStart();
 el('bd-quit').onclick=()=>buildQuit();
 el('bd-back').onclick=()=>bdUndo();
@@ -10866,9 +11490,11 @@ function openSettings(){
   el('sm-sound').classList.toggle('off',!S.cfg.sound);
   const lv=(S.exam&&S.exam.level)?S.exam.level:'미설정';
   el('sm-level-val').textContent=lv;
+  const kv=el('sm-key-val'); if(kv) kv.textContent=hasApiKey()?'켜짐 ✓':'꺼짐';
   el('settings-modal').classList.add('open');
 }
 el('settings-btn').onclick=openSettings;
+el('sm-apikey').onclick=()=>{ el('settings-modal').classList.remove('open'); openApiKeyModal(); };
 el('sm-close').onclick=()=>el('settings-modal').classList.remove('open');
 el('settings-modal').onclick=(e)=>{ if(e.target===el('settings-modal')) el('settings-modal').classList.remove('open'); };
 el('sm-sound').onclick=()=>{ S.cfg.sound=!S.cfg.sound;
