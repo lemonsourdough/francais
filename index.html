@@ -633,6 +633,21 @@
     border-radius:6px;cursor:pointer;text-shadow:0 0 8px var(--neon);transition:.15s}
   .ba-next:hover{background:rgba(57,255,20,.24)}
 
+  /* focus nudge overlay (idle) */
+  .focus-nudge{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;
+    background:radial-gradient(120% 120% at 50% 45%, rgba(10,58,20,.96), rgba(2,10,6,.985));
+    backdrop-filter:blur(3px);cursor:pointer}
+  .focus-nudge.show{display:flex;animation:bqfade .3s both}
+  .focus-nudge .fn-inner{text-align:center;padding:30px;animation:fnpulse 1.6s ease-in-out infinite}
+  @keyframes fnpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+  .focus-nudge .fn-eye{font-size:60px;filter:drop-shadow(0 0 20px var(--neon));animation:fneye 2.4s steps(1) infinite}
+  @keyframes fneye{0%,90%{opacity:1}92%,96%{opacity:.15}}
+  .focus-nudge .fn-fr{font-family:'VT323','Courier New',monospace;font-size:64px;line-height:1.05;color:#5BFF6A;margin-top:12px;
+    text-shadow:0 0 20px var(--neon),1px 0 0 rgba(255,0,80,.4),-1px 0 0 rgba(0,200,255,.4)}
+  .focus-nudge .fn-ko{font-family:'Rajdhani',sans-serif;font-size:24px;color:var(--ink);margin-top:10px;opacity:.9}
+  .focus-nudge .fn-tap{font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:2px;color:#3FBF7A;margin-top:28px;
+    animation:bqblink 1.1s steps(2) infinite}
+
   /* ---- exam banner + weakness ---- */
   .weak-cta{background:linear-gradient(180deg, rgba(198,255,74,.16), rgba(198,255,74,.04));border-color:var(--gold);color:var(--gold);text-shadow:0 0 8px rgba(198,255,74,.5);box-shadow:0 0 18px -4px rgba(198,255,74,.45),inset 0 0 14px -8px rgba(198,255,74,.5)}
   #exam-banner{margin-bottom:14px}
@@ -9130,20 +9145,73 @@ async function load(){
 }
 /* ---- study-time tracking (accrues while any active screen is open) ---- */
 let _timeTick=null, _lastTick=0, _activeScreen=false;
+let _lastActivity=Date.now();
+let _idleShown=false;
+const IDLE_MS=25000;        // 25s of no movement -> nudge
+const ACTIVE_WINDOW=4000;   // only count time if activity within last 4s
+function markActivity(){
+  _lastActivity=Date.now();
+  if(_idleShown) hideFocusNudge();
+}
+['mousemove','mousedown','keydown','touchstart','touchmove','scroll','wheel','click'].forEach(ev=>{
+  window.addEventListener(ev, markActivity, {passive:true});
+});
 function timeStart(){
   _activeScreen=true; _lastTick=Date.now();
   if(_timeTick) return;
   _timeTick=setInterval(()=>{
     if(!_activeScreen) return;
     const n=Date.now(); const d=Math.min(5,(n-_lastTick)/1000); _lastTick=n;
-    if(document.hidden) return;            // don't count when tab hidden
-    S.secs=(S.secs||0)+d;
-    renderTimeHUD();
-    if(Math.floor(S.secs)%15===0) save();  // periodic persist
+    if(document.hidden) return;                       // tab hidden -> no count
+    const idle = n-_lastActivity;
+    // only accumulate study time while the user is actively moving
+    if(idle < ACTIVE_WINDOW){
+      S.secs=(S.secs||0)+d;
+      renderTimeHUD();
+      if(Math.floor(S.secs)%15===0) save();
+    }
+    // idle too long on a learning screen -> focus nudge
+    if(idle >= IDLE_MS && !_idleShown && !document.hidden){
+      showFocusNudge();
+    }
   },1000);
 }
-function timeStop(){ _activeScreen=false; save(); }
-document.addEventListener('visibilitychange',()=>{ _lastTick=Date.now(); });
+function timeStop(){ _activeScreen=false; if(_idleShown) hideFocusNudge(); save(); }
+document.addEventListener('visibilitychange',()=>{ _lastTick=Date.now(); _lastActivity=Date.now(); });
+
+/* ===== FOCUS NUDGE (idle -> "Concentre-toi !") ===== */
+const FOCUS_LINES=[
+  {fr:"Concentre-toi !", ko:"집중해!"},
+  {fr:"Reviens, on étudie !", ko:"돌아와, 공부하자!"},
+  {fr:"Ne lâche pas maintenant.", ko:"지금 놓지 마."},
+  {fr:"Encore un peu d'effort !", ko:"조금만 더 힘내!"},
+  {fr:"Reste avec moi, en français !", ko:"프랑스어에 집중하자!"},
+  {fr:"Allez, on continue !", ko:"자, 계속 가자!"},
+];
+function showFocusNudge(){
+  _idleShown=true;
+  const pick=FOCUS_LINES[Math.floor(Math.random()*FOCUS_LINES.length)];
+  let ov=el('focus-nudge');
+  if(!ov){ ov=document.createElement('div'); ov.id='focus-nudge'; ov.className='focus-nudge'; document.body.appendChild(ov); }
+  ov.innerHTML=`<div class="fn-inner">
+    <div class="fn-eye">👁</div>
+    <div class="fn-fr">${pick.fr}</div>
+    <div class="fn-ko">${pick.ko}</div>
+    <div class="fn-tap">움직이면 다시 시작돼요 · TAP</div>
+  </div>`;
+  ov.classList.add('show');
+  ov.onclick=()=>{ markActivity(); };
+  // speak in French + alert sound
+  try{ speak(pick.fr); }catch(e){}
+  try{ sound('again'); }catch(e){}
+  // repeat the voice once more after a beat if still idle
+  ov._t=setTimeout(()=>{ if(_idleShown){ try{speak(pick.fr);}catch(e){} } }, 2600);
+}
+function hideFocusNudge(){
+  _idleShown=false;
+  const ov=el('focus-nudge'); if(ov){ ov.classList.remove('show'); clearTimeout(ov._t); }
+  _lastTick=Date.now();
+}
 // study-time ranks (minutes -> rank). Unlock rewards as hours accumulate.
 const RANKS=[
   {m:0,    nm:'ROOKIE',   ko:'신참',       ic:'🥉'},
@@ -9606,13 +9674,19 @@ async function bdReveal(){
 async function fetchGrammar(ans, ko, gEl){
   if(!gEl) return;
   if(grammarCache[ans]){ renderGrammar(gEl, grammarCache[ans]); return; }
-  const prompt=`다음 프랑스어 문장을 한국 학습자가 "바로 외울 수 있게" 문법적으로 분해해줘.\n\n문장: "${ans}"\n뜻: "${ko}"\n\n각 단어(또는 묶음)별로 품사와 문법적 역할을 분석하고, 어순이 왜 이런지 핵심만 짚어줘. 설명은 간결한 한국어로. 아래 JSON만 출력(다른 말 없이):\n{"parts":[{"fr":"단어","pos":"품사(예: 대명사/동사/전치사/명사/관사/형용사/부사)","role":"이 문장에서의 역할 한 줄"}],"structure":"전체 어순·문법 구조를 한 문장으로 (예: 주어+조동사+과거분사+전치사+목적어)","tip":"외울 때 핵심 포인트 한 줄"}`;
-  try{
-    const txt=await callClaude(prompt, 700);
-    const j=parseJSON(txt);
-    if(j&&j.parts){ grammarCache[ans]=j; renderGrammar(gEl, j); }
-    else { gEl.innerHTML='<span class="ba-load">분석을 불러오지 못했어요. (인터넷 확인)</span>'; }
-  }catch(e){ gEl.innerHTML='<span class="ba-load">분석 오류</span>'; }
+  const prompt=`다음 프랑스어 문장을 한국 학습자가 "바로 외울 수 있게" 문법적으로 분해해줘.\n\n문장: "${ans}"\n뜻: "${ko}"\n\n각 단어(또는 묶음)별로 품사와 문법적 역할을 분석하고, 어순 핵심만 짚어줘. 간결한 한국어로. 반드시 아래 JSON만 출력(코드블록·설명 금지):\n{"parts":[{"fr":"단어","pos":"품사","role":"역할 한 줄"}],"structure":"어순 구조 한 줄","tip":"외울 핵심 한 줄"}`;
+  let lastTxt='';
+  for(let attempt=0;attempt<2;attempt++){
+    try{
+      const txt=await callClaude(prompt, 1500);
+      lastTxt=txt||'';
+      const j=parseJSON(txt);
+      if(j&&j.parts&&j.parts.length){ grammarCache[ans]=j; renderGrammar(gEl, j); return; }
+    }catch(e){ lastTxt='[fetch error] '+(e&&e.message||e); }
+  }
+  // graceful fallback: at least split tokens locally so user still sees a breakdown
+  const parts=ans.replace(/\s+/g,' ').trim().split(' ').map(w=>({fr:w,pos:'',role:''}));
+  renderGrammar(gEl, {parts, structure:'', tip:'문법 분석 서버 연결이 불안정해요. 잠시 후 다시 시도해 보세요.'});
 }
 function renderGrammar(gEl, j){
   let html='<div class="ba-parts">';
@@ -9897,13 +9971,17 @@ function findUnit(target,key){
 
 /* ============ WRITING PRACTICE ============ */
 async function callClaude(prompt, maxTok){
-  const res=await fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:maxTok||600, messages:[{role:"user",content:prompt}] })
-  });
-  if(!res.ok) return null;
-  const data=await res.json();
-  return (data.content||[]).map(b=>b.type==='text'?b.text:'').join('').trim();
+  let res;
+  try{
+    res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:maxTok||600, messages:[{role:"user",content:prompt}] })
+    });
+  }catch(e){ return null; }
+  if(!res.ok){ return null; }
+  let data; try{ data=await res.json(); }catch(e){ return null; }
+  const txt=(data.content||[]).map(b=> (b&&b.type==='text') ? b.text : (typeof b==='string'?b:'')).join('').trim();
+  return txt||null;
 }
 function parseJSON(txt){
   if(!txt) return null;
