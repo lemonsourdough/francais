@@ -192,7 +192,7 @@
   .sea-act:active{transform:scale(.96)}
   #sea-start{background:rgba(57,255,20,.14);color:var(--neon);text-shadow:0 0 8px var(--neon)}
 
-  .sea{position:relative;width:100%;height:min(170vw,1100px);overflow:hidden;border-radius:6px;
+  .sea{position:relative;width:100%;height:calc(100vh - 230px);min-height:560px;overflow:hidden;border-radius:6px;
     background:
       radial-gradient(140% 80% at 50% 0%, rgba(0,255,160,.10), rgba(0,0,0,0) 55%),
       repeating-linear-gradient(0deg, rgba(57,255,20,.025) 0 2px, transparent 2px 26px),
@@ -205,21 +205,29 @@
   @keyframes seabg{to{background-position:0 400px}}
 
   .word-chip{position:absolute;cursor:pointer;font-family:'Rajdhani','Consolas',monospace;white-space:nowrap;
-    color:var(--ink);background:none;border:none;padding:3px 5px;transition:transform .18s,color .18s,text-shadow .18s,filter .18s;
+    color:var(--ink);background:none;border:none;padding:3px 5px;
     text-shadow:0 0 6px rgba(57,255,20,.25);will-change:transform;z-index:1;line-height:1}
-  .word-chip:hover{color:#fff;text-shadow:0 0 14px var(--neon),0 0 28px var(--neon);transform:scale(1.4)!important;z-index:30;filter:brightness(1.4)}
-  .word-chip.tier0{color:#8CFF9E;font-weight:700}      /* common words: bright */
-  .word-chip.tier1{color:#3FBF7A;opacity:.85}          /* mid */
-  .word-chip.tier2{color:#1f8f4e;opacity:.6;font-weight:400} /* faint deep words */
-  .word-chip.seen{color:var(--teal);text-shadow:0 0 8px var(--teal)} /* already learned glow */
-  .word-chip.float{animation:wfloat var(--dur,8s) ease-in-out infinite alternate}
-  @keyframes wfloat{from{transform:translateY(0)}to{transform:translateY(var(--fy,-8px))}}
+  /* inner span gets the hover scale so it never fights the drift transform on the button */
+  .word-chip .wc{display:inline-block;transition:transform .18s,color .18s,text-shadow .18s,filter .18s}
+  .word-chip:hover{z-index:30}
+  .word-chip:hover .wc{color:#fff;text-shadow:0 0 14px var(--neon),0 0 28px var(--neon);transform:scale(1.5);filter:brightness(1.4)}
+  .word-chip.tier0{color:#8CFF9E;font-weight:700}
+  .word-chip.tier1{color:#3FBF7A;opacity:.85}
+  .word-chip.tier2{color:#1f8f4e;opacity:.6;font-weight:400}
+  .word-chip.seen{color:var(--teal);text-shadow:0 0 8px var(--teal)}
+  /* every word drifts; direction/speed varied per-chip via custom props */
+  .word-chip{animation:wdrift var(--dur,11s) ease-in-out infinite alternate;animation-delay:var(--del,0s)}
+  @keyframes wdrift{
+    0%{transform:translate(0,0)}
+    100%{transform:translate(var(--dx,6px),var(--dy,-10px))}
+  }
   /* action chips scattered in the sea */
   .sea-link{position:absolute;cursor:pointer;font-family:'Orbitron','Courier New',monospace;font-weight:700;
     font-size:13px;letter-spacing:1px;padding:7px 11px;border-radius:4px;border:none;
     background:rgba(57,255,20,.12);color:var(--neon);text-shadow:0 0 8px var(--neon);
+    animation:wdrift var(--dur,13s) ease-in-out infinite alternate;animation-delay:var(--del,0s)}
     box-shadow:0 0 16px -5px var(--neon),inset 0 0 10px -6px var(--neon);transition:transform .15s,box-shadow .2s;z-index:5;white-space:nowrap}
-  .sea-link:hover{transform:scale(1.12) rotate(-1deg);box-shadow:0 0 26px -3px var(--neon)}
+  .sea-link:hover{animation-play-state:paused;transform:scale(1.12) rotate(-1deg);box-shadow:0 0 26px -3px var(--neon)}
   .sea-link:active{transform:scale(.97)}
   .sea-link.alt{background:rgba(0,255,200,.12);color:var(--teal);text-shadow:0 0 8px var(--teal);box-shadow:0 0 16px -5px var(--teal),inset 0 0 10px -6px var(--teal)}
   .sea-link.warn{background:rgba(198,255,74,.12);color:var(--gold);text-shadow:0 0 8px var(--gold);box-shadow:0 0 16px -5px var(--gold),inset 0 0 10px -6px var(--gold)}
@@ -259,6 +267,35 @@
   .smp-b i{font-style:normal;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ink-soft)}
   .smp-b:hover{background:rgba(57,255,20,.13);box-shadow:0 0 14px -5px var(--neon)}
   .smp-b:active{transform:scale(.97)}
+
+  /* ---- settings modal ---- */
+  .settings-modal{position:fixed;inset:0;z-index:200;background:rgba(2,10,6,.85);backdrop-filter:blur(4px);
+    display:none;align-items:center;justify-content:center;padding:20px}
+  .settings-modal.open{display:flex;animation:bqfade .25s both}
+  .sm-card{position:relative;max-width:440px;width:100%;background:#06170f;border-radius:10px;padding:26px 24px 20px;
+    box-shadow:0 0 50px -8px var(--neon),inset 0 0 40px -28px var(--neon);border:1px solid #0c5c1e}
+  .sm-close{position:absolute;top:16px;right:16px;background:rgba(57,255,20,.08);border:none;color:var(--ink);
+    width:32px;height:32px;border-radius:6px;cursor:pointer;font-size:14px}
+  .sm-close:hover{background:rgba(57,255,20,.18)}
+  .sm-title{font-family:'Orbitron','Courier New',monospace;font-size:18px;font-weight:900;color:var(--neon);
+    letter-spacing:2px;text-shadow:0 0 12px rgba(57,255,20,.5);margin-bottom:20px}
+  .sm-row{display:flex;align-items:center;gap:14px;padding:13px 0}
+  .sm-l{flex:1;min-width:0}
+  .sm-l b{display:block;font-family:'Rajdhani','Consolas',monospace;font-weight:700;font-size:15px;color:var(--ink)}
+  .sm-l i{display:block;font-style:normal;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:2px}
+  .sm-toggle,.sm-btn,.sm-btn-warn,.sm-btn-danger{flex:none;border:none;cursor:pointer;border-radius:6px;
+    font-family:'Orbitron','Courier New',monospace;font-weight:700;font-size:12px;letter-spacing:1px;padding:10px 16px;transition:.15s}
+  .sm-toggle{background:rgba(57,255,20,.16);color:var(--neon);box-shadow:inset 0 0 12px -7px var(--neon)}
+  .sm-toggle.off{background:rgba(120,120,120,.12);color:var(--ink-soft);box-shadow:none}
+  .sm-toggle:hover{filter:brightness(1.2)}
+  .sm-btn{background:rgba(0,255,200,.12);color:var(--teal);box-shadow:inset 0 0 12px -7px var(--teal)}
+  .sm-btn:hover{background:rgba(0,255,200,.22)}
+  .sm-btn-warn{background:rgba(198,255,74,.12);color:var(--gold);box-shadow:inset 0 0 12px -7px var(--gold)}
+  .sm-btn-warn:hover{background:rgba(198,255,74,.22)}
+  .sm-btn-danger{background:rgba(255,92,92,.12);color:#FF5C5C;box-shadow:inset 0 0 12px -7px #FF5C5C}
+  .sm-btn-danger:hover{background:rgba(255,92,92,.24)}
+  .sm-divider{height:1px;background:var(--line);margin:8px 0}
+  .sm-foot{text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ink-soft);margin-top:18px;letter-spacing:1px;opacity:.6}
   .hero{padding:24px 22px;position:relative;overflow:hidden}
   .hero .greet{font-family:'Orbitron','Courier New',monospace;font-size:24px;font-weight:900;line-height:1.15;margin:0 0 6px;
     letter-spacing:1px;text-transform:uppercase;color:var(--ink);text-shadow:0 0 12px rgba(57,255,20,.45)}
@@ -793,11 +830,12 @@
 
 <div class="wrap">
   <div class="top">
-    <div class="brand"><span class="fleur">⚡</span><h1 data-txt="FRANÇAIS_OS">FRANÇAIS<em>_OS</em></h1></div>
+    <div class="brand" id="brand-home"><span class="fleur">⚡</span><h1 data-txt="FRANÇAIS_OS">FRANÇAIS<em>_OS</em></h1></div>
     <div class="stat-chips">
       <div class="chip flame"><span class="ico">🔥</span><span id="c-streak">0</span></div>
       <div class="chip lvl"><span class="ico">🎖️</span>Lv<span id="c-lvl">1</span></div>
       <button class="chip snd" id="snd-toggle"><span class="ico" id="snd-ico">🔊</span></button>
+      <button class="chip snd" id="settings-btn"><span class="ico">⚙️</span></button>
     </div>
   </div>
 
@@ -1215,6 +1253,37 @@
       <h2 class="arcade-title">ROADMAP</h2>
     </div>
     <div id="cur-body"></div>
+  </div>
+</div>
+
+<div class="settings-modal" id="settings-modal">
+  <div class="sm-card">
+    <button class="sm-close" id="sm-close">✕</button>
+    <div class="sm-title">⚙️ SETTINGS</div>
+
+    <div class="sm-row">
+      <div class="sm-l"><b>🔊 사운드</b><i>효과음 켜기/끄기</i></div>
+      <button class="sm-toggle" id="sm-sound">ON</button>
+    </div>
+
+    <div class="sm-row">
+      <div class="sm-l"><b>⏱ 누적 학습 시간</b><i id="sm-time-val">0s</i></div>
+      <button class="sm-btn-warn" id="sm-reset-time">리셋</button>
+    </div>
+
+    <div class="sm-row">
+      <div class="sm-l"><b>🎯 목표 레벨</b><i id="sm-level-val">미설정</i></div>
+      <button class="sm-btn" id="sm-reset-level">변경</button>
+    </div>
+
+    <div class="sm-divider"></div>
+
+    <div class="sm-row">
+      <div class="sm-l"><b>🗑 전체 진도 초기화</b><i>모든 학습 기록·통계 삭제 (되돌릴 수 없음)</i></div>
+      <button class="sm-btn-danger" id="sm-reset-all">전체 리셋</button>
+    </div>
+
+    <div class="sm-foot">FRANÇAIS_OS · v2.0</div>
   </div>
 </div>
 
@@ -10200,30 +10269,31 @@ function fillSea(){
   const pool=seaPool().slice();
   // weighted pick: favor lower-rank (common) words but include deep ones
   for(let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
-  const COUNT=Math.min(120, Math.max(60, Math.floor(W*H/4200)));
+  const COUNT=Math.min(220, Math.max(90, Math.floor(W*H/3400)));
   const placed=[];
   let n=0;
   for(const item of pool){
     if(n>=COUNT) break;
     const c=item.c;
     const fr=c.answer.split(/[.?!]/)[0].trim(); if(!fr||fr.length>26) continue;
-    // tier by frequency rank -> visual depth
     const tier = item.rank<60?0 : item.rank<180?1 : 2;
     const size = tier===0? (15+Math.random()*9) : tier===1? (12+Math.random()*5) : (10+Math.random()*3);
-    const x=Math.random()*92, y=Math.random()*96;
-    // light overlap avoidance
-    let ok=true; for(const p of placed){ if(Math.abs(p.x-x)<7 && Math.abs(p.y-y)<3.2){ ok=false;break; } }
+    const x=Math.random()*92, y=Math.random()*97;
+    let ok=true; for(const p of placed){ if(Math.abs(p.x-x)<6 && Math.abs(p.y-y)<2.6){ ok=false;break; } }
     if(!ok) continue;
     placed.push({x,y});
     const b=document.createElement('button');
     const seen=S.prog[c.id]&&S.prog[c.id].reps>0;
-    b.className='word-chip tier'+tier+(seen?' seen':'')+(Math.random()<0.5?' float':'');
-    b.textContent=fr;
+    b.className='word-chip tier'+tier+(seen?' seen':'');
+    const span=document.createElement('span'); span.className='wc'; span.textContent=fr; b.appendChild(span);
     b.style.left=x+'%'; b.style.top=y+'%';
     b.style.fontSize=size.toFixed(1)+'px';
-    b.style.transform='rotate('+(Math.random()*8-4).toFixed(1)+'deg)';
-    b.style.setProperty('--dur',(6+Math.random()*8).toFixed(1)+'s');
-    b.style.setProperty('--fy',(-(4+Math.random()*10)).toFixed(0)+'px');
+    // every chip drifts in a unique direction/speed, continuously
+    const ang=Math.random()*Math.PI*2, amp=6+Math.random()*16;
+    b.style.setProperty('--dx',(Math.cos(ang)*amp).toFixed(1)+'px');
+    b.style.setProperty('--dy',(Math.sin(ang)*amp).toFixed(1)+'px');
+    b.style.setProperty('--dur',(7+Math.random()*10).toFixed(1)+'s');
+    b.style.setProperty('--del',(-Math.random()*8).toFixed(1)+'s');
     b.onclick=(e)=>seaTapWord(e,c);
     sea.appendChild(b);
     n++;
@@ -10242,16 +10312,19 @@ const SEA_LINKS=[
   {t:'🗺️ ROADMAP', cls:'', act:()=>openCurriculum()},
 ];
 function scatterSeaLinks(sea, placed){
-  // spread action links across vertical bands so they're reachable but mixed in
   const bands=SEA_LINKS.length;
   SEA_LINKS.forEach((L,i)=>{
     const b=document.createElement('button');
     b.className='sea-link '+L.cls;
     b.textContent=L.t;
-    const yBand=(i/bands)*92 + Math.random()*6 + 2;
-    const x=8+Math.random()*60;
+    const yBand=(i/bands)*90 + Math.random()*5 + 3;
+    const x=8+Math.random()*58;
     b.style.left=x+'%'; b.style.top=yBand+'%';
-    b.style.transform='rotate('+(Math.random()*6-3).toFixed(1)+'deg)';
+    const ang=Math.random()*Math.PI*2, amp=8+Math.random()*14;
+    b.style.setProperty('--dx',(Math.cos(ang)*amp).toFixed(1)+'px');
+    b.style.setProperty('--dy',(Math.sin(ang)*amp).toFixed(1)+'px');
+    b.style.setProperty('--dur',(9+Math.random()*8).toFixed(1)+'s');
+    b.style.setProperty('--del',(-Math.random()*6).toFixed(1)+'s');
     b.onclick=L.act;
     sea.appendChild(b);
     twe(b);
@@ -10276,7 +10349,8 @@ function seaTapWord(e, c){
       <button class="sp-add">${inDeck?'⭐ SAVED':'➕ SAVE'}</button>
     </div>`;
   document.body.appendChild(pop);
-  const r=e.target.getBoundingClientRect();
+  const chip=e.currentTarget;
+  const r=chip.getBoundingClientRect();
   let left=Math.min(Math.max(8,r.left), innerWidth-pop.offsetWidth-8);
   let top=r.bottom+8; if(top+pop.offsetHeight>innerHeight-8) top=r.top-pop.offsetHeight-8;
   pop.style.left=left+'px'; pop.style.top=Math.max(8,top)+'px';
@@ -10287,7 +10361,7 @@ function seaTapWord(e, c){
     if(lb.textContent.includes('QUEUE')) return;
     grade(c.id,'again');                       // schedules it due now -> enters review queue
     S.stats.xp+=2; save();
-    lb.textContent='✓ IN QUEUE'; e.target.classList.add('seen');
+    lb.textContent='✓ IN QUEUE'; chip.classList.add('seen');
     el('c-lvl').textContent=levelFor(S.stats.xp);
     sound('good'); toast('📥 복습 큐에 등록! 곧 다시 만나요');
     flashQueueCount();
@@ -10296,13 +10370,13 @@ function seaTapWord(e, c){
   const kb=pop.querySelector('.sp-know');
   kb.onclick=(ev)=>{ ev.stopPropagation();
     grade(c.id,'good'); S.stats.xp+=3; save();
-    e.target.classList.add('seen'); el('c-lvl').textContent=levelFor(S.stats.xp);
+    chip.classList.add('seen'); el('c-lvl').textContent=levelFor(S.stats.xp);
     sound('lucky'); toast('🧠 알고 있는 단어로 표시!'); pop.remove();
   };
   const addb=pop.querySelector('.sp-add');
   addb.onclick=(ev)=>{ev.stopPropagation(); if(addb.textContent.includes('SAVED'))return;
-    const okk=addCustomWord(c.answer, ko, c.ipa, c.kw, c.group); if(okk){ addb.textContent='⭐ SAVED'; e.target.classList.add('seen'); } };
-  if(!S.prog[c.id]||!S.prog[c.id].reps){ e.target.classList.add('seen'); }
+    const okk=addCustomWord(c.answer, ko, c.ipa, c.kw, c.group); if(okk){ addb.textContent='⭐ SAVED'; chip.classList.add('seen'); } };
+  if(!S.prog[c.id]||!S.prog[c.id].reps){ chip.classList.add('seen'); }
   const close=(ev)=>{ if(pop.contains(ev.target))return; pop.remove(); document.removeEventListener('click',close); };
   setTimeout(()=>document.addEventListener('click',close),50);
 }
@@ -10579,6 +10653,46 @@ el('snd-toggle').onclick=()=>{
   el('snd-toggle').classList.toggle('off',!S.cfg.sound);
   if(S.cfg.sound) sound('good');
   save();
+};
+// logo -> home
+el('brand-home').onclick=()=>show('home');
+el('brand-home').style.cursor='pointer';
+// settings modal
+function openSettings(){
+  el('sm-time-val').textContent=fmtDuration(S.secs);
+  el('sm-sound').textContent=S.cfg.sound?'ON':'OFF';
+  el('sm-sound').classList.toggle('off',!S.cfg.sound);
+  const lv=(S.exam&&S.exam.level)?S.exam.level:'미설정';
+  el('sm-level-val').textContent=lv;
+  el('settings-modal').classList.add('open');
+}
+el('settings-btn').onclick=openSettings;
+el('sm-close').onclick=()=>el('settings-modal').classList.remove('open');
+el('settings-modal').onclick=(e)=>{ if(e.target===el('settings-modal')) el('settings-modal').classList.remove('open'); };
+el('sm-sound').onclick=()=>{ S.cfg.sound=!S.cfg.sound;
+  el('snd-ico').textContent=S.cfg.sound?'🔊':'🔇';
+  el('snd-toggle').classList.toggle('off',!S.cfg.sound);
+  el('sm-sound').textContent=S.cfg.sound?'ON':'OFF'; el('sm-sound').classList.toggle('off',!S.cfg.sound);
+  if(S.cfg.sound)sound('good'); save();
+};
+el('sm-reset-time').onclick=()=>{
+  if(confirm('누적 학습 시간을 0으로 리셋할까요?\n(랭크도 ROOKIE로 돌아가요)')){
+    S.secs=0; save(); renderTimeHUD(); el('sm-time-val').textContent='0s'; toast('⏱ 학습 시간 리셋 완료');
+  }
+};
+el('sm-reset-level').onclick=()=>{
+  el('settings-modal').classList.remove('open');
+  S.exam=null; save(); show('home');
+};
+el('sm-reset-all').onclick=()=>{
+  if(confirm('정말 전체 초기화할까요?\n모든 학습 기록·진도·통계·시간·내 단어장이 삭제되고 되돌릴 수 없어요.')){
+    if(confirm('마지막 확인: 정말 다 지울까요?')){
+      S={stats:{xp:0,streak:0,lastDay:null,reviewed:0},prog:{},cfg:{sound:S.cfg.sound},exam:null,hist:{},tests:[],custom:[],secs:0};
+      rebuildCustom(); save();
+      el('settings-modal').classList.remove('open');
+      renderTimeHUD(); show('home'); toast('🗑 전체 초기화 완료 · 새 출발!');
+    }
+  }
 };
 document.addEventListener('keydown',e=>{
   if(el('game').style.display==='block' && gActive){
