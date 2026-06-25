@@ -9686,7 +9686,8 @@ async function fetchGrammar(ans, ko, gEl){
   }
   // graceful fallback: at least split tokens locally so user still sees a breakdown
   const parts=ans.replace(/\s+/g,' ').trim().split(' ').map(w=>({fr:w,pos:'',role:''}));
-  renderGrammar(gEl, {parts, structure:'', tip:'문법 분석 서버 연결이 불안정해요. 잠시 후 다시 시도해 보세요.'});
+  const why=_lastApiError? (' ('+_lastApiError+')') : '';
+  renderGrammar(gEl, {parts, structure:'', tip:'문법 분석을 불러오지 못했어요.'+why});
 }
 function renderGrammar(gEl, j){
   let html='<div class="ba-parts">';
@@ -9753,7 +9754,7 @@ Réponds UNIQUEMENT en JSON valide, sans texte autour, sans backticks. Format ex
 {"title":"...","title_ko":"...","paragraphs":[{"fr":"...","ko":"..."}],"glossary":[{"w":"mot","pos":"n.m.","ko":"뜻"}],"quiz":[{"q":"질문(한국어)","options":["..francais ou coréen.."],"answer":0,"exp":"해설(한국어)"}]}`;
   const res=await fetch("https://api.anthropic.com/v1/messages",{
     method:"POST", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:2000, messages:[{role:"user",content:prompt}] })
+    body:JSON.stringify({ model:"claude-sonnet-4-5", max_tokens:2000, messages:[{role:"user",content:prompt}] })
   });
   if(!res.ok) return null;
   const data=await res.json();
@@ -9970,18 +9971,26 @@ function findUnit(target,key){
 }
 
 /* ============ WRITING PRACTICE ============ */
+let _lastApiError='';
 async function callClaude(prompt, maxTok){
+  _lastApiError='';
   let res;
   try{
     res=await fetch("https://api.anthropic.com/v1/messages",{
       method:"POST", headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:maxTok||600, messages:[{role:"user",content:prompt}] })
+      body:JSON.stringify({ model:"claude-sonnet-4-5", max_tokens:maxTok||600, messages:[{role:"user",content:prompt}] })
     });
-  }catch(e){ return null; }
-  if(!res.ok){ return null; }
-  let data; try{ data=await res.json(); }catch(e){ return null; }
+  }catch(e){ _lastApiError='네트워크 오류: '+(e&&e.message||e); return null; }
+  if(!res.ok){
+    let body=''; try{ body=await res.text(); }catch(e){}
+    _lastApiError='HTTP '+res.status+(body?' · '+body.slice(0,160):'');
+    return null;
+  }
+  let data; try{ data=await res.json(); }catch(e){ _lastApiError='JSON 파싱 실패'; return null; }
+  if(data && data.error){ _lastApiError='API: '+(data.error.message||JSON.stringify(data.error)).slice(0,160); return null; }
   const txt=(data.content||[]).map(b=> (b&&b.type==='text') ? b.text : (typeof b==='string'?b:'')).join('').trim();
-  return txt||null;
+  if(!txt){ _lastApiError='빈 응답'; return null; }
+  return txt;
 }
 function parseJSON(txt){
   if(!txt) return null;
@@ -10729,7 +10738,7 @@ async function translateSentence(c){
     const res=await fetch("https://api.anthropic.com/v1/messages",{
       method:"POST", headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
-        model:"claude-sonnet-4-20250514", max_tokens:200,
+        model:"claude-sonnet-4-5", max_tokens:200,
         messages:[{role:"user",content:
           "다음 프랑스어 문장을 자연스러운 한국어로 번역해줘. 설명·따옴표·부가설명 없이 번역문 한 줄만 출력해.\n\n프랑스어: "+c.answer+"\n(영어 참고 번역: "+c.front+")"}]
       })
